@@ -8,6 +8,8 @@
     <string name="nav_processes">Procesos</string>
     <string name="nav_monitor">Monitor</string>
     <string name="nav_device">Equipo</string>
+    <string name="nav_installed">Instaladas</string>
+    <string name="nav_running">Ejecución</string>
     <string name="nav_settings">Ajustes</string>
 
     <string name="overview_section">Estado del dispositivo</string>
@@ -56,6 +58,8 @@
     <string name="apps_no_results">No se encontraron aplicaciones</string>
     <string name="apps_system">Sistema</string>
     <string name="apps_user">Usuario</string>
+    <string name="apps_installed">Instaladas</string>
+    <string name="apps_running">En ejecución</string>
     <string name="memory_title">Memoria RAM</string>
     <string name="cpu_title">CPU</string>
     <string name="storage_title">Almacenamiento</string>

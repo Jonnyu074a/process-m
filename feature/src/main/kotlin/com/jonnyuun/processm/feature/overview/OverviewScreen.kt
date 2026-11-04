@@ -49,6 +49,7 @@ import com.jonnyuun.processm.core.model.StorageSnapshot
 import com.jonnyuun.processm.core.model.UnavailableReason
 import com.jonnyuun.processm.domain.AppsRepository
 import com.jonnyuun.processm.domain.MetricsRepository
+import com.jonnyuun.processm.domain.ProcessRepository
 import com.jonnyuun.processm.domain.SettingsRepository
 import org.koin.compose.koinInject
 import com.jonnyuun.processm.feature.apps.AppsScreen
@@ -70,23 +71,28 @@ import top.yukonga.miuix.kmp.basic.TextButton
 import top.yukonga.miuix.kmp.theme.MiuixTheme
 
 @Composable
-fun OverviewRoute(repository: MetricsRepository, settings: SettingsRepository, appsRepository: AppsRepository) {
+fun OverviewRoute(
+    repository: MetricsRepository,
+    settings: SettingsRepository,
+    appsRepository: AppsRepository,
+    processRepository: ProcessRepository,
+) {
     val viewModel: OverviewViewModel = viewModel(
         factory = OverviewViewModel.factory(repository, settings),
     )
     val state by viewModel.state.collectAsStateWithLifecycle()
-    OverviewScreen(state = state, appsRepository = appsRepository)
+    OverviewScreen(state = state, appsRepository = appsRepository, processRepository = processRepository)
 }
 
 @Composable
-fun OverviewScreen(state: OverviewUiState, appsRepository: AppsRepository) {
+fun OverviewScreen(
+    state: OverviewUiState,
+    appsRepository: AppsRepository,
+    processRepository: ProcessRepository,
+) {
     var selectedTab by rememberSaveable { mutableIntStateOf(0) }
     var showSettings by rememberSaveable { mutableStateOf(false) }
     val settings = koinInject<com.jonnyuun.processm.domain.SettingsRepository>()
-    val appsViewModel: AppsViewModel = androidx.lifecycle.viewmodel.compose.viewModel(
-        factory = AppsViewModel.factory(appsRepository),
-    )
-    val appsState by appsViewModel.state.collectAsStateWithLifecycle()
 
     if (showSettings) {
         SettingsScreen(onBack = { showSettings = false }, settings = settings)
@@ -120,9 +126,9 @@ fun OverviewScreen(state: OverviewUiState, appsRepository: AppsRepository) {
                     .padding(padding)
                     .consumeWindowInsets(padding),
             )
-            2 -> AppsScreen(
-                state = appsState,
-                onQueryChanged = { appsViewModel.onQueryChanged(it) },
+            2 -> AppsRoute(
+                appsRepository = appsRepository,
+                processRepository = processRepository,
             )
             4 -> DeviceScreen(
                 state = state,

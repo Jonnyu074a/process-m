@@ -56,6 +56,8 @@
     <string name="apps_no_results">No applications found</string>
     <string name="apps_system">System</string>
     <string name="apps_user">User</string>
+    <string name="apps_installed">Installed</string>
+    <string name="apps_running">Running</string>
     <string name="memory_title">RAM</string>
     <string name="cpu_title">CPU</string>
     <string name="storage_title">Storage</string>
