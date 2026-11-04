@@ -2,7 +2,7 @@ package com.jonnyuun.processm.data
 
 import android.content.Context
 import com.jonnyuun.processm.core.system.AndroidProcessSource
-import com.jonnyuun.processm.core.system.ProcessSnapshot
+import com.jonnyuun.processm.core.model.ProcessSnapshot
 import com.jonnyuun.processm.domain.ProcessRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

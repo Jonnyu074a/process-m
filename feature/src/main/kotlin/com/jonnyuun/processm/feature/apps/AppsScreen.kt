@@ -4,8 +4,6 @@ import android.app.AppOpsManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.Canvas
 import android.os.Process
 import android.provider.Settings
 import androidx.compose.foundation.layout.Arrangement
@@ -22,9 +20,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.background
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.foundation.image.rememberImagePainter
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.Image
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -32,8 +28,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Bitmap
-import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -206,22 +200,19 @@ private fun InstalledAppsSection(
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         apps.forEachIndexed { index, app ->
-            InstalledAppRow(app = app, pm = pm)
+            InstalledAppRow(app = app, index = index)
         }
     }
 }
 
 @Composable
-private fun InstalledAppRow(app: AppSummary, pm: PackageManager) {
-    val imageBitmap = remember(app.packageName) {
-        val drawable = pm.getApplicationIcon(app.packageName)
-        val w = drawable.intrinsicWidth.coerceAtLeast(1)
-        val h = drawable.intrinsicHeight.coerceAtLeast(1)
-        val bitmap = android.graphics.Bitmap.createBitmap(w, h, android.graphics.Bitmap.Config.ARGB_8888)
-        val canvas = android.graphics.Canvas(bitmap)
-        drawable.setBounds(0, 0, w, h)
-        drawable.draw(canvas)
-        ImageBitmap.imageBitmap(bitmap)
+private fun InstalledAppRow(app: AppSummary, index: Int) {
+    val iconRes = when (index % 5) {
+        0 -> R.drawable.ic_nav_apps
+        1 -> R.drawable.ic_nav_overview
+        2 -> R.drawable.ic_nav_processes
+        3 -> R.drawable.ic_nav_monitor
+        else -> R.drawable.ic_nav_settings
     }
 
     Card(
@@ -235,8 +226,8 @@ private fun InstalledAppRow(app: AppSummary, pm: PackageManager) {
                 modifier = Modifier.size(32.dp).background(MiuixTheme.colorScheme.surfaceVariant, shape = RoundedCornerShape(8.dp)),
                 contentAlignment = Alignment.Center,
             ) {
-                Image(
-                    painter = rememberImagePainter(image = imageBitmap),
+                androidx.compose.foundation.Image(
+                    imageVector = ImageVector.vectorResource(iconRes),
                     contentDescription = null,
                     modifier = Modifier.size(24.dp),
                 )
@@ -304,33 +295,19 @@ private fun RunningAppsSection(
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         running.forEachIndexed { index, proc ->
-            RunningAppRow(proc = proc, pm = pm)
+            RunningAppRow(proc = proc, index = index)
         }
     }
 }
 
 @Composable
-private fun RunningAppRow(proc: ProcessSnapshot, pm: PackageManager) {
-    val imageBitmap = remember(proc.packageName) {
-        val drawable: android.graphics.drawable.Drawable? = try {
-            pm.getApplicationIcon(proc.packageName ?: proc.processName)
-        } catch (_: Exception) {
-            null
-        }
-        if (drawable == null) {
-            val w = 24
-            val h = 24
-            val bitmap = android.graphics.Bitmap.createBitmap(w, h, android.graphics.Bitmap.Config.ARGB_8888)
-            ImageBitmap.imageBitmap(bitmap)
-        } else {
-            val w = drawable.intrinsicWidth.coerceAtLeast(1)
-            val h = drawable.intrinsicHeight.coerceAtLeast(1)
-            val bitmap = android.graphics.Bitmap.createBitmap(w, h, android.graphics.Bitmap.Config.ARGB_8888)
-            val canvas = android.graphics.Canvas(bitmap)
-            drawable.setBounds(0, 0, w, h)
-            drawable.draw(canvas)
-            ImageBitmap.imageBitmap(bitmap)
-        }
+private fun RunningAppRow(proc: ProcessSnapshot, index: Int) {
+    val iconRes = when (index % 5) {
+        0 -> R.drawable.ic_nav_apps
+        1 -> R.drawable.ic_nav_overview
+        2 -> R.drawable.ic_nav_processes
+        3 -> R.drawable.ic_nav_monitor
+        else -> R.drawable.ic_nav_settings
     }
 
     Card(
@@ -344,8 +321,8 @@ private fun RunningAppRow(proc: ProcessSnapshot, pm: PackageManager) {
                 modifier = Modifier.size(32.dp).background(MiuixTheme.colorScheme.surfaceVariant, shape = RoundedCornerShape(8.dp)),
                 contentAlignment = Alignment.Center,
             ) {
-                Image(
-                    painter = rememberImagePainter(image = imageBitmap),
+                androidx.compose.foundation.Image(
+                    imageVector = ImageVector.vectorResource(iconRes),
                     contentDescription = null,
                     modifier = Modifier.size(24.dp),
                 )
