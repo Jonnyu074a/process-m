@@ -25,7 +25,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -50,6 +49,8 @@ import top.yukonga.miuix.kmp.theme.MiuixTheme
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
+
+private class QueryHolder(var value: String)
 
 @Composable
 fun AppsRoute(appsRepository: AppsRepository, processRepository: ProcessRepository) {
@@ -82,8 +83,12 @@ fun AppsScreen(
         },
         bottomBar = {
             top.yukonga.miuix.kmp.basic.NavigationBar {
-                // Empty bottom bar: reserves navigation-bar inset so content does not overlap
-                // the system gesture area. Main bottom tabs are owned by OverviewScreen.
+                top.yukonga.miuix.kmp.basic.NavigationBarItem(
+                    selected = true,
+                    onClick = {},
+                    icon = ImageVector.vectorResource(R.drawable.ic_nav_apps),
+                    label = stringResource(R.string.nav_installed),
+                )
             }
         },
     ) { padding ->
@@ -159,11 +164,11 @@ private fun InstalledAppsSection(
         color = MiuixTheme.colorScheme.onSurface,
     )
 
-    var query by remember { mutableStateOf(state.query) }
+    val queryHolder = remember { QueryHolder(state.query) }
     BasicTextField(
-        value = query,
+        value = queryHolder.value,
         onValueChange = {
-            query = it
+            queryHolder.value = it
             onQueryChanged(it)
         },
         modifier = Modifier.fillMaxWidth(),
@@ -254,11 +259,11 @@ private fun RunningAppsSection(
         color = MiuixTheme.colorScheme.onSurface,
     )
 
-    var query by remember { mutableStateOf(state.runningQuery) }
+    val queryHolder = remember { QueryHolder(state.runningQuery) }
     BasicTextField(
-        value = query,
+        value = queryHolder.value,
         onValueChange = {
-            query = it
+            queryHolder.value = it
             onQueryChanged(it)
         },
         modifier = Modifier.fillMaxWidth(),
