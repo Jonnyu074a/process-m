@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_title">Process M</string>
+    <string name="app_subtitle">Monitor del sistema</string>
+
+    <string name="nav_overview">Resumen</string>
+    <string name="nav_apps">Apps</string>
+    <string name="nav_processes">Procesos</string>
+    <string name="nav_monitor">Monitor</string>
+    <string name="nav_settings">Ajustes</string>
+
+    <string name="overview_section">Estado del dispositivo</string>
+    <string name="memory_title">Memoria RAM</string>
+    <string name="cpu_title">CPU</string>
+    <string name="storage_title">Almacenamiento</string>
+
+    <string name="measuring">Midiendo…</string>
+    <string name="unavailable">No disponible</string>
+    <string name="waiting_first_sample">Esperando la primera muestra…</string>
+
+    <string name="memory_caption">de %1$s · %2$s en uso</string>
+    <string name="cpu_cores">%1$d núcleos</string>
+    <string name="cpu_load">carga %1$s</string>
+    <string name="storage_caption">de %1$s · %2$s en uso</string>
+
+    <string name="metric_measured">Medido</string>
+    <string name="metric_calculated">Calculado</string>
+    <string name="metric_estimated">Estimado</string>
+    <string name="source_format">Fuente: %1$s</string>
+    <string name="updated_at">Actualizado a las %1$s · cada 2 s</string>
+
+    <string name="reason_not_supported">La plataforma no expone este dato</string>
+    <string name="reason_permission_required">Requiere un permiso</string>
+    <string name="reason_access_level_required">Requiere Shizuku o root</string>
+    <string name="reason_not_readable">No se puede leer ahora</string>
+    <string name="reason_collecting">Recolectando muestras</string>
+    <string name="reason_read_error">Error de lectura</string>
+
+    <string name="placeholder_body">Esta sección llegará en una fase posterior.</string>
+</resources>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_title">Process M</string>
+    <string name="app_subtitle">System monitor</string>
+
+    <string name="nav_overview">Overview</string>
+    <string name="nav_apps">Apps</string>
+    <string name="nav_processes">Processes</string>
+    <string name="nav_monitor">Monitor</string>
+    <string name="nav_settings">Settings</string>
+
+    <string name="overview_section">Device status</string>
+    <string name="memory_title">RAM</string>
+    <string name="cpu_title">CPU</string>
+    <string name="storage_title">Storage</string>
+
+    <string name="measuring">Measuring…</string>
+    <string name="unavailable">Not available</string>
+    <string name="waiting_first_sample">Waiting for the first sample…</string>
+
+    <string name="memory_caption">of %1$s · %2$s in use</string>
+    <string name="cpu_cores">%1$d cores</string>
+    <string name="cpu_load">load %1$s</string>
+    <string name="storage_caption">of %1$s · %2$s in use</string>
+
+    <string name="metric_measured">Measured</string>
+    <string name="metric_calculated">Calculated</string>
+    <string name="metric_estimated">Estimated</string>
+    <string name="source_format">Source: %1$s</string>
+    <string name="updated_at">Updated at %1$s · every 2 s</string>
+
+    <string name="reason_not_supported">The platform does not expose this data</string>
+    <string name="reason_permission_required">A permission is required</string>
+    <string name="reason_access_level_required">Shizuku or root is required</string>
+    <string name="reason_not_readable">Cannot be read right now</string>
+    <string name="reason_collecting">Collecting samples</string>
+    <string name="reason_read_error">Read error</string>
+
+    <string name="placeholder_body">This section will arrive in a later phase.</string>
+</resources>
