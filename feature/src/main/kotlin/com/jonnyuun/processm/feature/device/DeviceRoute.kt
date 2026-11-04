@@ -143,5 +143,3 @@ private fun hasUsageStatsPermission(context: Context): Boolean {
     )
     return mode == AppOpsManager.MODE_ALLOWED
 }
-EOF
-echo done
