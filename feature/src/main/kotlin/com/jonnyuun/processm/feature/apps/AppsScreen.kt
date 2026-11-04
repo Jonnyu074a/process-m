@@ -41,6 +41,8 @@ import com.jonnyuun.processm.domain.AppsRepository
 import com.jonnyuun.processm.domain.ProcessRepository
 import com.jonnyuun.processm.feature.R
 import top.yukonga.miuix.kmp.basic.Card
+import top.yukonga.miuix.kmp.basic.NavigationBar
+import top.yukonga.miuix.kmp.basic.NavigationBarItem
 import top.yukonga.miuix.kmp.basic.Scaffold
 import top.yukonga.miuix.kmp.basic.SmallTopAppBar
 import top.yukonga.miuix.kmp.basic.Text
@@ -82,8 +84,8 @@ fun AppsScreen(
             )
         },
         bottomBar = {
-            top.yukonga.miuix.kmp.basic.NavigationBar {
-                top.yukonga.miuix.kmp.basic.NavigationBarItem(
+            NavigationBar {
+                NavigationBarItem(
                     selected = true,
                     onClick = {},
                     icon = ImageVector.vectorResource(R.drawable.ic_nav_apps),
