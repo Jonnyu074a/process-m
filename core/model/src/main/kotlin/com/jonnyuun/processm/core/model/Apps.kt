@@ -19,5 +19,3 @@ data class AppDetail(
     val dataSizeBytes: Long?,
     val cacheSizeBytes: Long?,
 )
-EOF
-echo done
