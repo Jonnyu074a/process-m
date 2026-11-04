@@ -52,6 +52,7 @@ import com.jonnyuun.processm.domain.MetricsRepository
 import com.jonnyuun.processm.domain.ProcessRepository
 import com.jonnyuun.processm.domain.SettingsRepository
 import org.koin.compose.koinInject
+import com.jonnyuun.processm.feature.apps.AppsRoute
 import com.jonnyuun.processm.feature.apps.AppsScreen
 import com.jonnyuun.processm.feature.apps.AppsViewModel
 import com.jonnyuun.processm.feature.device.DeviceScreen

@@ -22,11 +22,13 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.background
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.image.rememberImagePainter
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.Image
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -210,7 +212,7 @@ private fun InstalledAppsSection(
 
 @Composable
 private fun InstalledAppRow(app: AppSummary, pm: PackageManager) {
-    val icon = remember(app.packageName) {
+    val painter = remember(app.packageName) {
         val drawable = pm.getApplicationIcon(app.packageName)
         val w = drawable.intrinsicWidth.coerceAtLeast(1)
         val h = drawable.intrinsicHeight.coerceAtLeast(1)
@@ -218,7 +220,7 @@ private fun InstalledAppRow(app: AppSummary, pm: PackageManager) {
         val canvas = Canvas(bitmap)
         drawable.setBounds(0, 0, w, h)
         drawable.draw(canvas)
-        ImageBitmap.imageBitmap(bitmap)
+        rememberImagePainter(bitmap = ImageBitmap.imageBitmap(bitmap))
     }
 
     Card(
@@ -233,7 +235,7 @@ private fun InstalledAppRow(app: AppSummary, pm: PackageManager) {
                 contentAlignment = Alignment.Center,
             ) {
                 Image(
-                    imageBitmap = icon,
+                    painter = painter,
                     contentDescription = null,
                     modifier = Modifier.size(24.dp),
                 )
@@ -308,7 +310,7 @@ private fun RunningAppsSection(
 
 @Composable
 private fun RunningAppRow(proc: ProcessSnapshot, pm: PackageManager) {
-    val icon = remember(proc.packageName) {
+    val painter = remember(proc.packageName) {
         val drawable: android.graphics.drawable.Drawable? = try {
             pm.getApplicationIcon(proc.packageName ?: proc.processName)
         } catch (_: Exception) {
@@ -318,7 +320,7 @@ private fun RunningAppRow(proc: ProcessSnapshot, pm: PackageManager) {
             val w = 24
             val h = 24
             val bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
-            ImageBitmap.imageBitmap(bitmap)
+            rememberImagePainter(bitmap = ImageBitmap.imageBitmap(bitmap))
         } else {
             val w = drawable.intrinsicWidth.coerceAtLeast(1)
             val h = drawable.intrinsicHeight.coerceAtLeast(1)
@@ -326,7 +328,7 @@ private fun RunningAppRow(proc: ProcessSnapshot, pm: PackageManager) {
             val canvas = Canvas(bitmap)
             drawable.setBounds(0, 0, w, h)
             drawable.draw(canvas)
-            ImageBitmap.imageBitmap(bitmap)
+            rememberImagePainter(bitmap = ImageBitmap.imageBitmap(bitmap))
         }
     }
 
@@ -342,7 +344,7 @@ private fun RunningAppRow(proc: ProcessSnapshot, pm: PackageManager) {
                 contentAlignment = Alignment.Center,
             ) {
                 Image(
-                    imageBitmap = icon,
+                    painter = painter,
                     contentDescription = null,
                     modifier = Modifier.size(24.dp),
                 )
@@ -389,4 +391,3 @@ private fun hasUsageStatsPermission(context: Context): Boolean {
     )
     return mode == AppOpsManager.MODE_ALLOWED
 }
-EOF
