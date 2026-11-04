@@ -13,18 +13,15 @@ como “No disponible”, nunca como un dato inventado.
 
 ## Estado
 
-**Spike 1 publicado — pendiente de validar en el teléfono.** GitHub Actions genera
-un APK con tema MIUIX, métricas reales de RAM/CPU/almacenamiento y barra inferior
-con iconos. El plan está validado y la Fase 1 (Overview + Device) es lo siguiente.
+**Fase 1 en curso — primera entrega publicada.** Droidsypm ya usa Koin, muestra
+batería y tiene pantalla Device con métricas reales. Siguientes pasos de la
+Fase 1: estados de permiso y pulido de Overview/Device.
 
 - Package: `com.jonnyuun.processm`
 - Distribución: sideload (uso personal, fuera de Google Play)
 - Root: incluido en v1, siempre opt-in y con lista blanca.
-- APK de prueba: [v0.1.4-spike4](https://github.com/Jonnyu074a/process-m/releases/tag/v0.1.4-spike4)
-  (anteriores: [v0.1.3-spike3](https://github.com/Jonnyu074a/process-m/releases/tag/v0.1.3-spike3),
-  [v0.1.2-spike2](https://github.com/Jonnyu074a/process-m/releases/tag/v0.1.2-spike2),
-  [v0.1.1-spike1](https://github.com/Jonnyu074a/process-m/releases/tag/v0.1.1-spike1),
-  [v0.1.0-spike0](https://github.com/Jonnyu074a/process-m/releases/tag/v0.1.0-spike0))
+- APK de prueba: [v0.2.0-phase1](https://github.com/Jonnyu074a/process-m/releases/tag/v0.2.0-phase1)
+  (anteriores: [v0.1.4-spike4](https://github.com/Jonnyu074a/process-m/releases/tag/v0.1.4-spike4), ...)
 
 ## Documentación
 
