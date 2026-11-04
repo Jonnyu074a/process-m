@@ -8,6 +8,5 @@ kotlin {
 
 dependencies {
     implementation(project(":core:model"))
-    implementation(project(":core:system"))
     implementation(libs.kotlinx.coroutines.core)
 }

@@ -3,6 +3,7 @@ package com.jonnyuun.processm.core.system
 import android.app.ActivityManager
 import android.content.Context
 import android.content.pm.PackageManager
+import com.jonnyuun.processm.core.model.ProcessSnapshot
 
 class AndroidProcessSource(
     private val context: Context,

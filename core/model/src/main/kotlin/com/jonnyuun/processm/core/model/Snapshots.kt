@@ -30,3 +30,13 @@ data class StorageSnapshot(
     val usedFraction: Double
         get() = if (totalBytes <= 0L) 0.0 else usedBytes.toDouble() / totalBytes
 }
+
+/** Snapshot de un proceso en ejecución con su consumo de memoria. */
+data class ProcessSnapshot(
+    val pid: Int,
+    val processName: String,
+    val packageName: String?,
+    val importance: Int,
+    val ramBytes: Long,
+    val isSystem: Boolean,
+)
