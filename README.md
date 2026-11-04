@@ -13,15 +13,15 @@ como “No disponible”, nunca como un dato inventado.
 
 ## Estado
 
-**Fase 1 en curso — primera entrega publicada.** Droidsypm ya usa Koin, muestra
-batería y tiene pantalla Device con métricas reales. Siguientes pasos de la
-Fase 1: estados de permiso y pulido de Overview/Device.
+**Fase 1 cerrada — primera entrega completa.** Droidsypm usa Koin, muestra
+batería, tiene pantallas Overview/Device diferenciadas, onboarding mínimo y
+Ajustes accesible desde el engranaje. Siguiente: Fase 2 (métricas y gráficas).
 
 - Package: `com.jonnyuun.processm`
 - Distribución: sideload (uso personal, fuera de Google Play)
 - Root: incluido en v1, siempre opt-in y con lista blanca.
-- APK de prueba: [v0.2.3-phase1](https://github.com/Jonnyu074a/process-m/releases/tag/v0.2.3-phase1)
-  (anteriores: [v0.2.2-phase1](https://github.com/Jonnyu074a/process-m/releases/tag/v0.2.2-phase1), ...)
+- APK de prueba: [v0.2.4-phase1](https://github.com/Jonnyu074a/process-m/releases/tag/v0.2.4-phase1)
+  (anteriores: [v0.2.3-phase1](https://github.com/Jonnyu074a/process-m/releases/tag/v0.2.3-phase1), ...)
 
 ## Documentación
 
