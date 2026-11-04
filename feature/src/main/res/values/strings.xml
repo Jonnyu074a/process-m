@@ -11,6 +11,9 @@
     <string name="nav_settings">Ajustes</string>
 
     <string name="overview_section">Estado del dispositivo</string>
+    <string name="onboarding_title">Bienvenido a Droidsypm</string>
+    <string name="onboarding_body">Monitor del sistema con datos reales. Cada métrica indica su fuente y, si no está disponible, el motivo.</string>
+    <string name="onboarding_dismiss">Entendido</string>
     <string name="device_overview_title">Dispositivo</string>
     <string name="device_android">Android %1$s · API %2$d</string>
     <string name="device_battery">Batería</string>
@@ -28,6 +31,18 @@
     <string name="device_permission_denied">No concedido</string>
     <string name="device_permission_open_settings">Abrir ajustes</string>
     <string name="device_permission_none">En nivel Estándar no se solicitan permisos sensibles.</string>
+    <string name="settings_title">Ajustes</string>
+    <string name="settings_back">Atrás</string>
+    <string name="settings_appearance">Apariencia</string>
+    <string name="settings_appearance_body">Tema, acento y movimiento. Próximamente.</string>
+    <string name="settings_monitoring">Monitorización</string>
+    <string name="settings_monitoring_body">Intervalo y métricas. Próximamente.</string>
+    <string name="settings_access">Acceso avanzado</string>
+    <string name="settings_access_body">Shizuku y root. Próximamente.</string>
+    <string name="settings_privacy">Privacidad y datos</string>
+    <string name="settings_privacy_body">Exportar y borrar datos. Próximamente.</string>
+    <string name="settings_about">Acerca de</string>
+    <string name="settings_about_body">Versión, licencias y fuentes. Próximamente.</string>
     <string name="memory_title">Memoria RAM</string>
     <string name="cpu_title">CPU</string>
     <string name="storage_title">Almacenamiento</string>

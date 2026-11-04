@@ -20,10 +20,13 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
+import android.content.Context
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -44,18 +47,21 @@ import com.jonnyuun.processm.core.model.Metric
 import com.jonnyuun.processm.core.model.StorageSnapshot
 import com.jonnyuun.processm.core.model.UnavailableReason
 import com.jonnyuun.processm.domain.MetricsRepository
-import com.jonnyuun.processm.feature.R
+import com.jonnyuun.processm.feature.settings.SettingsScreen
 import com.jonnyuun.processm.feature.device.DeviceScreen
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import top.yukonga.miuix.kmp.basic.NavigationBar
 import top.yukonga.miuix.kmp.basic.Card
+import top.yukonga.miuix.kmp.basic.Icon
+import top.yukonga.miuix.kmp.basic.IconButton
 import top.yukonga.miuix.kmp.basic.LinearProgressIndicator
 import top.yukonga.miuix.kmp.basic.NavigationBarItem
 import top.yukonga.miuix.kmp.basic.Scaffold
 import top.yukonga.miuix.kmp.basic.SmallTopAppBar
 import top.yukonga.miuix.kmp.basic.Text
+import top.yukonga.miuix.kmp.basic.TextButton
 import top.yukonga.miuix.kmp.theme.MiuixTheme
 
 @Composable
@@ -70,12 +76,26 @@ fun OverviewRoute(repository: MetricsRepository) {
 @Composable
 fun OverviewScreen(state: OverviewUiState) {
     var selectedTab by rememberSaveable { mutableIntStateOf(0) }
+    var showSettings by rememberSaveable { mutableStateOf(false) }
+
+    if (showSettings) {
+        SettingsScreen(onBack = { showSettings = false })
+        return
+    }
 
     Scaffold(
         topBar = {
             SmallTopAppBar(
                 title = stringResource(R.string.app_title),
                 subtitle = stringResource(R.string.app_subtitle),
+                actions = {
+                    IconButton(onClick = { showSettings = true }) {
+                        Icon(
+                            imageVector = ImageVector.vectorResource(R.drawable.ic_nav_settings),
+                            contentDescription = stringResource(R.string.settings_title),
+                        )
+                    }
+                },
             )
         },
         bottomBar = {
@@ -132,6 +152,37 @@ private fun OverviewContent(state: OverviewUiState, modifier: Modifier = Modifie
             fontSize = 13.sp,
             color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
         )
+
+        val context = LocalContext.current
+        val prefs = context.getSharedPreferences("droidsypm", Context.MODE_PRIVATE)
+        var onboardingDismissed by remember { mutableStateOf(prefs.getBoolean("onboarding_dismissed", false)) }
+        if (!onboardingDismissed) {
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                insideMargin = PaddingValues(horizontal = 16.dp, vertical = 14.dp),
+            ) {
+                Text(
+                    text = stringResource(R.string.onboarding_title),
+                    fontSize = 15.sp,
+                    fontWeight = FontWeight.SemiBold,
+                    color = MiuixTheme.colorScheme.onSurface,
+                )
+                Spacer(Modifier.height(4.dp))
+                Text(
+                    text = stringResource(R.string.onboarding_body),
+                    fontSize = 13.sp,
+                    color = MiuixTheme.colorScheme.onSurfaceSecondary,
+                )
+                Spacer(Modifier.height(8.dp))
+                TextButton(
+                    text = stringResource(R.string.onboarding_dismiss),
+                    onClick = {
+                        onboardingDismissed = true
+                        prefs.edit().putBoolean("onboarding_dismissed", true).apply()
+                    },
+                )
+            }
+        }
 
         MemoryCard(state.memory, state.memoryHistory)
         CpuCard(state.cpu, state.cpuHistory)
