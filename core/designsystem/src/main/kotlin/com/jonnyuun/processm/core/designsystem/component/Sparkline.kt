@@ -88,5 +88,3 @@ fun Sparkline(
         drawCircle(color = Color.White, radius = 2f, center = points.last())
     }
 }
-EOF
-echo done

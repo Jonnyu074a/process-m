@@ -144,5 +144,3 @@ fun MetricCard(
         }
     }
 }
-EOF
-echo done
