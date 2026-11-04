@@ -20,8 +20,9 @@ con iconos. El plan está validado y la Fase 1 (Overview + Device) es lo siguien
 - Package: `com.jonnyuun.processm`
 - Distribución: sideload (uso personal, fuera de Google Play)
 - Root: incluido en v1, siempre opt-in y con lista blanca.
-- APK de prueba: [v0.1.1-spike1](https://github.com/Jonnyu074a/process-m/releases/tag/v0.1.1-spike1)
-  (la versión anterior sigue en [v0.1.0-spike0](https://github.com/Jonnyu074a/process-m/releases/tag/v0.1.0-spike0))
+- APK de prueba: [v0.1.2-spike2](https://github.com/Jonnyu074a/process-m/releases/tag/v0.1.2-spike2)
+  (versiones anteriores: [v0.1.1-spike1](https://github.com/Jonnyu074a/process-m/releases/tag/v0.1.1-spike1),
+  [v0.1.0-spike0](https://github.com/Jonnyu074a/process-m/releases/tag/v0.1.0-spike0))
 
 ## Documentación
 
@@ -52,6 +53,5 @@ se publica como artefacto `process-m-debug` y como Release.
 
 ## Próximo paso
 
-Instalar `v0.1.1-spike1` en el teléfono y comprobar la barra inferior con iconos,
-los márgenes y los insets. Después, cerrar la decisión sobre MIUIX y empezar la
-Fase 1 (Overview + Device con batería y estados de permiso, Koin).
+Instalar `v0.1.2-spike2` y validar las barras de progreso y sparklines, además de
+los márgenes y la navegación con iconos. Después, Fase 1 (Overview + Device).
