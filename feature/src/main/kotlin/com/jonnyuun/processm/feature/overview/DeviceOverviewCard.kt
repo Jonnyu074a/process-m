@@ -30,6 +30,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 
 
+@Composable
 fun DeviceOverviewCard(state: OverviewUiState) {
     val context = LocalContext.current
     val batteryManager = context.getSystemService(Context.BATTERY_SERVICE) as? BatteryManager
