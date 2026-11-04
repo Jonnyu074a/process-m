@@ -1,5 +1,33 @@
 package com.jonnyuun.processm.feature.overview
 
+import android.content.Context
+import android.os.BatteryManager
+import android.os.Build
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import com.jonnyuun.processm.core.common.formatBytes
+import com.jonnyuun.processm.core.model.Metric
+import com.jonnyuun.processm.feature.R
+import top.yukonga.miuix.kmp.basic.Card
+import top.yukonga.miuix.kmp.basic.LinearProgressIndicator
+import top.yukonga.miuix.kmp.basic.Text
+import top.yukonga.miuix.kmp.theme.MiuixTheme
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.material3.Text
+
+
 fun DeviceOverviewCard(state: OverviewUiState) {
     val context = LocalContext.current
     val batteryManager = context.getSystemService(Context.BATTERY_SERVICE) as? BatteryManager

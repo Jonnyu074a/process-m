@@ -43,6 +43,7 @@ import com.jonnyuun.processm.core.model.MemorySnapshot
 import com.jonnyuun.processm.core.model.Metric
 import com.jonnyuun.processm.core.model.StorageSnapshot
 import com.jonnyuun.processm.core.model.UnavailableReason
+import com.jonnyuun.processm.domain.MetricsRepository
 import com.jonnyuun.processm.feature.R
 import com.jonnyuun.processm.feature.device.DeviceScreen
 import java.time.Instant
@@ -309,5 +310,5 @@ private fun formatTime(instant: Instant): String =
         .format(instant)
 
 @Suppress("UNCHECKED_CAST")
-private fun <T> Metric<T>?.availableValue(): T? =
+internal fun <T> Metric<T>?.availableValue(): T? =
     (this as? Metric.Available<*>)?.value as T?
