@@ -9,6 +9,7 @@ plugins {
 android {
     namespace = "com.jonnyuun.processm"
     compileSdk = 37
+    compileSdkMinor = 0
 
     defaultConfig {
         applicationId = "com.jonnyuun.processm"
