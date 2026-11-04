@@ -44,7 +44,7 @@ import com.jonnyuun.processm.core.model.Metric
 import com.jonnyuun.processm.core.model.StorageSnapshot
 import com.jonnyuun.processm.core.model.UnavailableReason
 import com.jonnyuun.processm.domain.MetricsRepository
-import com.jonnyuun.processm.feature.R
+import com.jonnyuun.processm.feature.device.DeviceScreen
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -81,16 +81,22 @@ fun OverviewScreen(state: OverviewUiState) {
             ProcessMBottomBar(selected = selectedTab, onSelect = { selectedTab = it })
         },
     ) { padding ->
-        if (selectedTab == 0) {
-            OverviewContent(
+        when (selectedTab) {
+            0 -> OverviewContent(
                 state = state,
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(padding)
                     .consumeWindowInsets(padding),
             )
-        } else {
-            PlaceholderContent(
+            4 -> DeviceScreen(
+                state = state,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(padding)
+                    .consumeWindowInsets(padding),
+            )
+            else -> PlaceholderContent(
                 title = tabLabel(selectedTab),
                 modifier = Modifier
                     .fillMaxSize()
@@ -135,7 +141,7 @@ private fun OverviewContent(state: OverviewUiState, modifier: Modifier = Modifie
 }
 
 @Composable
-private fun MemoryCard(metric: Metric<MemorySnapshot>?, history: List<Float>) {
+fun MemoryCard(metric: Metric<MemorySnapshot>?, history: List<Float>) {
     val title = stringResource(R.string.memory_title)
     val snapshot = metric.availableValue()
 
@@ -159,7 +165,7 @@ private fun MemoryCard(metric: Metric<MemorySnapshot>?, history: List<Float>) {
 }
 
 @Composable
-private fun CpuCard(metric: Metric<CpuSnapshot>?, history: List<Float>) {
+fun CpuCard(metric: Metric<CpuSnapshot>?, history: List<Float>) {
     val title = stringResource(R.string.cpu_title)
     val snapshot = metric.availableValue()
 
@@ -183,7 +189,7 @@ private fun CpuCard(metric: Metric<CpuSnapshot>?, history: List<Float>) {
 }
 
 @Composable
-private fun StorageCard(metric: Metric<StorageSnapshot>?) {
+fun StorageCard(metric: Metric<StorageSnapshot>?) {
     val title = stringResource(R.string.storage_title)
     val snapshot = metric.availableValue()
 
@@ -246,10 +252,10 @@ private data class NavItem(val labelRes: Int, val iconRes: Int)
 
 private val navItems = listOf(
     NavItem(R.string.nav_overview, R.drawable.ic_nav_overview),
-    NavItem(R.string.nav_apps, R.drawable.ic_nav_apps),
     NavItem(R.string.nav_processes, R.drawable.ic_nav_processes),
+    NavItem(R.string.nav_apps, R.drawable.ic_nav_apps),
     NavItem(R.string.nav_monitor, R.drawable.ic_nav_monitor),
-    NavItem(R.string.nav_settings, R.drawable.ic_nav_settings),
+    NavItem(R.string.nav_device, R.drawable.ic_nav_device),
 )
 
 @Composable
@@ -267,109 +273,6 @@ private fun ProcessMBottomBar(selected: Int, onSelect: (Int) -> Unit) {
 }
 
 @Composable
-private fun DeviceOverviewCard(state: OverviewUiState) {
-    val context = LocalContext.current
-    val batteryManager = context.getSystemService(Context.BATTERY_SERVICE) as? BatteryManager
-    val batteryLevel = batteryManager?.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY) ?: -1
-    val hasBattery = batteryLevel in 0..100
-
-    val memory = state.memory?.availableValue()
-    val storage = state.storage?.availableValue()
-
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        insideMargin = PaddingValues(horizontal = 16.dp, vertical = 14.dp),
-    ) {
-        Text(
-            text = stringResource(R.string.device_overview_title),
-            fontSize = 13.sp,
-            color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
-        )
-
-        Spacer(Modifier.height(6.dp))
-
-        Text(
-            text = "${Build.MANUFACTURER} ${Build.MODEL}".trim(),
-            fontSize = 20.sp,
-            fontWeight = FontWeight.SemiBold,
-            color = MiuixTheme.colorScheme.onSurface,
-        )
-
-        Spacer(Modifier.height(4.dp))
-
-        Text(
-            text = stringResource(R.string.device_android, Build.VERSION.RELEASE, Build.VERSION.SDK_INT),
-            fontSize = 13.sp,
-            color = MiuixTheme.colorScheme.onSurfaceSecondary,
-        )
-
-        if (hasBattery) {
-            Spacer(Modifier.height(12.dp))
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(
-                    text = stringResource(R.string.device_battery),
-                    modifier = Modifier.weight(1f),
-                    fontSize = 13.sp,
-                    color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
-                )
-                Text(
-                    text = stringResource(R.string.percent_format, batteryLevel),
-                    fontSize = 13.sp,
-                    fontWeight = FontWeight.Medium,
-                    color = MiuixTheme.colorScheme.primary,
-                )
-            }
-            LinearProgressIndicator(
-                progress = batteryLevel / 100f,
-                modifier = Modifier.padding(top = 8.dp),
-                height = 8.dp,
-            )
-        } else {
-            Spacer(Modifier.height(8.dp))
-            Text(
-                text = stringResource(R.string.device_battery_unavailable),
-                fontSize = 13.sp,
-                color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
-            )
-        }
-
-        if (memory != null || storage != null) {
-            Spacer(Modifier.height(12.dp))
-            Row(horizontalArrangement = Arrangement.spacedBy(24.dp)) {
-                if (memory != null) {
-                    Column {
-                        Text(
-                            text = stringResource(R.string.device_ram_total),
-                            fontSize = 11.sp,
-                            color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
-                        )
-                        Text(
-                            text = formatBytes(memory.totalBytes),
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.Medium,
-                            color = MiuixTheme.colorScheme.onSurface,
-                        )
-                    }
-                }
-                if (storage != null) {
-                    Column {
-                        Text(
-                            text = stringResource(R.string.device_storage_total),
-                            fontSize = 11.sp,
-                            color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
-                        )
-                        Text(
-                            text = formatBytes(storage.totalBytes),
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.Medium,
-                            color = MiuixTheme.colorScheme.onSurface,
-                        )
-                    }
-                }
-            }
-        }
-    }
-}
 
 @Composable
 private fun PlaceholderContent(title: String, modifier: Modifier = Modifier) {

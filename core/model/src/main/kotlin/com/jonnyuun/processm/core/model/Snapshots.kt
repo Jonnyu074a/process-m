@@ -17,7 +17,11 @@ data class CpuSnapshot(
     val loadAverage1m: Double?,
 )
 
-/** Espacio del volumen de datos (`/data`). */
+/** Batería reportada por [android.os.BatteryManager]. */
+data class BatterySnapshot(
+    val levelPercent: Int,
+    val isCharging: Boolean,
+)
 data class StorageSnapshot(
     val totalBytes: Long,
     val availableBytes: Long,

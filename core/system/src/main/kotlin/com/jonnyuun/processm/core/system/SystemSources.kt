@@ -25,4 +25,11 @@ object SystemSources {
         accessLevel = AccessLevel.STANDARD,
         note = "Espacio del volumen de datos. 'Disponible' excluye bloques reservados del sistema.",
     )
+
+    val Battery = MetricSource(
+        id = "android.batterymanger",
+        label = "BatteryManager",
+        accessLevel = AccessLevel.STANDARD,
+        note = "Nivel y estado de carga reportados por Android.",
+    )
 }

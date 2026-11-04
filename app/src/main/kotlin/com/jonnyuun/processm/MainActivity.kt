@@ -7,7 +7,9 @@ import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.jonnyuun.processm.core.designsystem.theme.ProcessMTheme
+import com.jonnyuun.processm.domain.MetricsRepository
 import com.jonnyuun.processm.feature.overview.OverviewRoute
+import org.koin.android.ext.android.inject
 
 class MainActivity : ComponentActivity() {
 
@@ -19,7 +21,7 @@ class MainActivity : ComponentActivity() {
             navigationBarStyle = SystemBarStyle.dark(Color.TRANSPARENT),
         )
 
-        val repository = (application as ProcessMApp).graph.metricsRepository
+        val repository: MetricsRepository by inject()
 
         setContent {
             ProcessMTheme {

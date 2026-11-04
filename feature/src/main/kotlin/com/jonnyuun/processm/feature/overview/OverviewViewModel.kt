@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import com.jonnyuun.processm.core.model.BatterySnapshot
 import com.jonnyuun.processm.core.model.CpuSnapshot
 import com.jonnyuun.processm.core.model.MemorySnapshot
 import com.jonnyuun.processm.core.model.Metric
@@ -24,6 +25,7 @@ data class OverviewUiState(
     val memory: Metric<MemorySnapshot>? = null,
     val cpu: Metric<CpuSnapshot>? = null,
     val storage: Metric<StorageSnapshot>? = null,
+    val battery: Metric<BatterySnapshot>? = null,
     val lastUpdate: Instant? = null,
     val memoryHistory: List<Float> = emptyList(),
     val cpuHistory: List<Float> = emptyList(),
@@ -49,6 +51,7 @@ class OverviewViewModel(
                 val memory = repository.memory()
                 val cpu = repository.cpu()
                 val storage = repository.storage()
+                val battery = repository.battery()
 
                 val memoryFraction = (memory as? Metric.Available<MemorySnapshot>)?.value?.usedFraction?.toFloat()
                 val cpuFraction = ((cpu as? Metric.Available<CpuSnapshot>)?.value?.usagePercent)?.div(100.0)?.toFloat()
@@ -58,6 +61,7 @@ class OverviewViewModel(
                         memory = memory,
                         cpu = cpu,
                         storage = storage,
+                        battery = battery,
                         lastUpdate = Instant.now(),
                         memoryHistory = appendHistory(previous.memoryHistory, memoryFraction),
                         cpuHistory = appendHistory(previous.cpuHistory, cpuFraction),

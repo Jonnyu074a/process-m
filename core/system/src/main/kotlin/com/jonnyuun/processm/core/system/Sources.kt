@@ -1,5 +1,6 @@
 package com.jonnyuun.processm.core.system
 
+import com.jonnyuun.processm.core.model.BatterySnapshot
 import com.jonnyuun.processm.core.model.CpuSnapshot
 import com.jonnyuun.processm.core.model.MemorySnapshot
 import com.jonnyuun.processm.core.model.Metric
@@ -15,4 +16,8 @@ interface CpuSource {
 
 interface StorageSource {
     suspend fun read(): Metric<StorageSnapshot>
+}
+
+interface BatterySource {
+    suspend fun read(): Metric<BatterySnapshot>
 }
