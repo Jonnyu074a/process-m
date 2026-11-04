@@ -1,6 +1,6 @@
 # Fase 0 — Plan técnico
 
-**Proyecto:** Process M (`com.jonnyuun.processm`)
+**Proyecto:** Droidsypm (`com.jonnyuun.processm`)
 **Documento:** plan técnico de arranque
 **Fecha:** 2026-11-04
 **Estado:** validado por el usuario; Spike 1 en ejecución (scaffold + CI + UI base listos).
@@ -29,7 +29,7 @@
 | Nivel root | **Incluido en v1** (Fase 4 lectura, Fase 6 acciones) | Decisión del usuario; lista blanca, consentimiento y auditoría. |
 | Monitorización en segundo plano | **No en v1** | Evita Foreground Service tipos/políticas y consumo; se pausa al salir. |
 | Idioma | Español por defecto, recursos preparados para i18n | `values/` + `values-en/` y sin textos hardcodeados. |
-| Nombre / package | **Process M** / `com.jonnyuun.processm` | Identidad del desarrollador en el package. |
+| Nombre / package | **Droidsypm** / `com.jonnyuun.processm` | Identidad del desarrollador en el package. |
 | Distribución | Sideload (uso personal/compartir fuera de Play) | Sin restricciones de política de Play para `QUERY_ALL_PACKAGES`. |
 | Acento | Configurable (semilla Monet + presets) | Violeta por defecto; cambiable en Ajustes. |
 
@@ -490,7 +490,7 @@ docs/fase-0/
 | minSdk | 26 (Android 8.0). |
 | DI | Koin 4.2.2. |
 | Root | Incluido en v1 (lectura en Fase 4, acciones en Fase 6), opt-in. |
-| Nombre | Process M. |
+| Nombre | Droidsypm. |
 | Package | `com.jonnyuun.processm`. |
 | Distribución | Sideload para uso personal/compartir fuera de Google Play. |
 | Acento | Violeta por defecto; configurable en Ajustes. |

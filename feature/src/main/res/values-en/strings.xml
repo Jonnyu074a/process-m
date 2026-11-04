@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_title">Process M</string>
+    <string name="app_title">Droidsypm</string>
     <string name="app_subtitle">System monitor</string>
 
     <string name="nav_overview">Overview</string>
