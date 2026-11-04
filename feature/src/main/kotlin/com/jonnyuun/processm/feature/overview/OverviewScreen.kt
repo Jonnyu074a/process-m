@@ -95,7 +95,7 @@ private fun OverviewContent(state: OverviewUiState, modifier: Modifier = Modifie
     Column(
         modifier = modifier
             .verticalScroll(rememberScrollState())
-            .padding(horizontal = 20.dp, vertical = 12.dp),
+            .padding(horizontal = 24.dp, vertical = 12.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         Text(
@@ -104,8 +104,8 @@ private fun OverviewContent(state: OverviewUiState, modifier: Modifier = Modifie
             color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
         )
 
-        MemoryCard(state.memory)
-        CpuCard(state.cpu)
+        MemoryCard(state.memory, state.memoryHistory)
+        CpuCard(state.cpu, state.cpuHistory)
         StorageCard(state.storage)
 
         val updated = state.lastUpdate?.let(::formatTime)
@@ -122,7 +122,7 @@ private fun OverviewContent(state: OverviewUiState, modifier: Modifier = Modifie
 }
 
 @Composable
-private fun MemoryCard(metric: Metric<MemorySnapshot>?) {
+private fun MemoryCard(metric: Metric<MemorySnapshot>?, history: List<Float>) {
     val title = stringResource(R.string.memory_title)
     val snapshot = metric.availableValue()
 
@@ -137,6 +137,8 @@ private fun MemoryCard(metric: Metric<MemorySnapshot>?) {
             ),
             badge = stringResource(R.string.metric_measured),
             source = sourceLine(metric),
+            progress = snapshot.usedFraction.toFloat(),
+            history = history,
         )
     } else {
         UnavailableCard(title = title, metric = metric)
@@ -144,7 +146,7 @@ private fun MemoryCard(metric: Metric<MemorySnapshot>?) {
 }
 
 @Composable
-private fun CpuCard(metric: Metric<CpuSnapshot>?) {
+private fun CpuCard(metric: Metric<CpuSnapshot>?, history: List<Float>) {
     val title = stringResource(R.string.cpu_title)
     val snapshot = metric.availableValue()
 
@@ -159,6 +161,8 @@ private fun CpuCard(metric: Metric<CpuSnapshot>?) {
             caption = listOfNotNull(cores, load).joinToString(" · "),
             badge = stringResource(R.string.metric_calculated),
             source = sourceLine(metric),
+            progress = (snapshot.usagePercent / 100.0).toFloat(),
+            history = history,
         )
     } else {
         UnavailableCard(title = title, metric = metric)
@@ -181,6 +185,7 @@ private fun StorageCard(metric: Metric<StorageSnapshot>?) {
             ),
             badge = stringResource(R.string.metric_measured),
             source = sourceLine(metric),
+            progress = snapshot.usedFraction.toFloat(),
         )
     } else {
         UnavailableCard(title = title, metric = metric)
