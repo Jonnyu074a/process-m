@@ -7,6 +7,7 @@ import com.jonnyuun.processm.core.system.AndroidStorageSource
 import com.jonnyuun.processm.core.system.ProcCpuSource
 import com.jonnyuun.processm.data.SystemMetricsRepository
 import com.jonnyuun.processm.domain.MetricsRepository
+import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
 val appModule = module {
@@ -23,5 +24,3 @@ val appModule = module {
         )
     }
 }
-EOF
-echo done

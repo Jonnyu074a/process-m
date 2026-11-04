@@ -14,5 +14,3 @@ class ProcessMApp : Application() {
         }
     }
 }
-EOF
-echo done
