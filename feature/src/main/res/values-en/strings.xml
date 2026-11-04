@@ -37,6 +37,9 @@
     <string name="settings_appearance_body">Theme, accent and motion. Coming soon.</string>
     <string name="settings_monitoring">Monitoring</string>
     <string name="settings_monitoring_body">Interval and metrics. Coming soon.</string>
+    <string name="settings_sampling">Sampling interval</string>
+    <string name="settings_sampling_body">How often metrics are refreshed.</string>
+    <string name="settings_sampling_current">Current: %1$d s</string>
     <string name="settings_access">Advanced access</string>
     <string name="settings_access_body">Shizuku and root. Coming soon.</string>
     <string name="settings_privacy">Privacy and data</string>

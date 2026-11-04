@@ -32,6 +32,7 @@ import com.jonnyuun.processm.core.common.formatBytes
 import com.jonnyuun.processm.core.common.formatPercent
 import com.jonnyuun.processm.core.model.Metric
 import com.jonnyuun.processm.domain.MetricsRepository
+import com.jonnyuun.processm.domain.SettingsRepository
 import com.jonnyuun.processm.feature.overview.CpuCard
 import com.jonnyuun.processm.feature.overview.DeviceOverviewCard
 import com.jonnyuun.processm.feature.overview.availableValue
@@ -47,9 +48,9 @@ import top.yukonga.miuix.kmp.theme.MiuixTheme
 import androidx.compose.ui.res.stringResource
 
 @Composable
-fun DeviceRoute(repository: MetricsRepository) {
+fun DeviceRoute(repository: MetricsRepository, settings: SettingsRepository) {
     val viewModel: OverviewViewModel = viewModel(
-        factory = OverviewViewModel.factory(repository),
+        factory = OverviewViewModel.factory(repository, settings),
     )
     val state by viewModel.state.collectAsStateWithLifecycle()
     DeviceScreen(state = state)

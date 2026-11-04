@@ -37,6 +37,9 @@
     <string name="settings_appearance_body">Tema, acento y movimiento. Próximamente.</string>
     <string name="settings_monitoring">Monitorización</string>
     <string name="settings_monitoring_body">Intervalo y métricas. Próximamente.</string>
+    <string name="settings_sampling">Intervalo de muestreo</string>
+    <string name="settings_sampling_body">Frecuencia de actualización de las métricas.</string>
+    <string name="settings_sampling_current">Actual: %1$d s</string>
     <string name="settings_access">Acceso avanzado</string>
     <string name="settings_access_body">Shizuku y root. Próximamente.</string>
     <string name="settings_privacy">Privacidad y datos</string>

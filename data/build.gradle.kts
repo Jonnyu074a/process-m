@@ -31,4 +31,5 @@ dependencies {
     implementation(project(":core:model"))
     implementation(project(":core:system"))
     implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.androidx.datastore.preferences)
 }

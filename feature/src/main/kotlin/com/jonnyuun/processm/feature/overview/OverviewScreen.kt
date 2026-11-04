@@ -47,7 +47,8 @@ import com.jonnyuun.processm.core.model.Metric
 import com.jonnyuun.processm.core.model.StorageSnapshot
 import com.jonnyuun.processm.core.model.UnavailableReason
 import com.jonnyuun.processm.domain.MetricsRepository
-import com.jonnyuun.processm.feature.settings.SettingsScreen
+import com.jonnyuun.processm.domain.SettingsRepository
+import org.koin.androidx.compose.koinInject
 import com.jonnyuun.processm.feature.device.DeviceScreen
 import java.time.Instant
 import java.time.ZoneId
@@ -65,9 +66,9 @@ import top.yukonga.miuix.kmp.basic.TextButton
 import top.yukonga.miuix.kmp.theme.MiuixTheme
 
 @Composable
-fun OverviewRoute(repository: MetricsRepository) {
+fun OverviewRoute(repository: MetricsRepository, settings: SettingsRepository) {
     val viewModel: OverviewViewModel = viewModel(
-        factory = OverviewViewModel.factory(repository),
+        factory = OverviewViewModel.factory(repository, settings),
     )
     val state by viewModel.state.collectAsStateWithLifecycle()
     OverviewScreen(state = state)
@@ -77,9 +78,10 @@ fun OverviewRoute(repository: MetricsRepository) {
 fun OverviewScreen(state: OverviewUiState) {
     var selectedTab by rememberSaveable { mutableIntStateOf(0) }
     var showSettings by rememberSaveable { mutableStateOf(false) }
+    val settings = koinInject<com.jonnyuun.processm.domain.SettingsRepository>()
 
     if (showSettings) {
-        SettingsScreen(onBack = { showSettings = false })
+        SettingsScreen(onBack = { showSettings = false }, settings = settings)
         return
     }
 

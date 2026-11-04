@@ -11,12 +11,14 @@ import com.jonnyuun.processm.core.model.MemorySnapshot
 import com.jonnyuun.processm.core.model.Metric
 import com.jonnyuun.processm.core.model.StorageSnapshot
 import com.jonnyuun.processm.domain.MetricsRepository
+import com.jonnyuun.processm.domain.SettingsRepository
 import java.time.Instant
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
@@ -33,6 +35,7 @@ data class OverviewUiState(
 
 class OverviewViewModel(
     private val repository: MetricsRepository,
+    private val settings: SettingsRepository,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(OverviewUiState())
@@ -67,7 +70,7 @@ class OverviewViewModel(
                         cpuHistory = appendHistory(previous.cpuHistory, cpuFraction),
                     )
                 }
-                delay(POLL_INTERVAL_MS)
+                delay(settings.samplingIntervalMs.first())
             }
         }
     }
@@ -76,8 +79,8 @@ class OverviewViewModel(
         private const val POLL_INTERVAL_MS = 2_000L
         private const val HISTORY_SIZE = 30
 
-        fun factory(repository: MetricsRepository): ViewModelProvider.Factory = viewModelFactory {
-            initializer { OverviewViewModel(repository) }
+        fun factory(repository: MetricsRepository, settings: SettingsRepository): ViewModelProvider.Factory = viewModelFactory {
+            initializer { OverviewViewModel(repository, settings) }
         }
     }
 
