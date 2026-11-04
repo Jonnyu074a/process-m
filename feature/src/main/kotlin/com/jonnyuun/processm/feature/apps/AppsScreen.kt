@@ -11,8 +11,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.background
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -115,11 +113,11 @@ fun AppsScreen(
             )
         }
 
-        LazyColumn(
+        Column(
             modifier = Modifier.fillMaxWidth(),
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            itemsIndexed(apps) { index, app ->
+            apps.forEachIndexed { index, app ->
                 AppRow(app = app)
             }
         }
@@ -140,7 +138,7 @@ private fun AppRow(app: AppSummary) {
                 contentAlignment = Alignment.Center,
             ) {
                 Text(
-                    text = app.label.first().uppercase(),
+                    text = app.label.firstOrNull()?.uppercase() ?: "A",
                     fontSize = 12.sp,
                     fontWeight = androidx.compose.ui.text.font.FontWeight.Bold,
                     color = MiuixTheme.colorScheme.primary,
