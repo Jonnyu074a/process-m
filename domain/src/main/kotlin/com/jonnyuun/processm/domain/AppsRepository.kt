@@ -11,5 +11,3 @@ interface AppsRepository {
     /** Detalle de una aplicación por nombre de paquete. */
     suspend fun appDetail(packageName: String): AppDetail?
 }
-EOF
-echo done

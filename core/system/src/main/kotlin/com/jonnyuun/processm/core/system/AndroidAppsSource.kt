@@ -18,9 +18,9 @@ class AndroidAppsSource(
                 val pkgInfo = pm.getPackageInfo(appInfo.packageName, PackageManager.GET_META_DATA)
                 AppSummary(
                     packageName = appInfo.packageName,
-                    label = appInfo.loadLabel(pm) ?: appInfo.packageName,
+                    label = (appInfo.loadLabel(pm) ?: appInfo.packageName).toString(),
                     versionName = pkgInfo.versionName,
-                    versionCode = pkgInfo.versionCode,
+                    versionCode = pkgInfo.versionCode.toLong(),
                     isSystem = (appInfo.flags and ApplicationInfo.FLAG_SYSTEM) != 0,
                     uid = appInfo.uid,
                 )
@@ -41,18 +41,18 @@ class AndroidAppsSource(
                 summary = AppSummary(
                     packageName = pkgInfo.packageName,
                     label = try {
-                        pm.getApplicationLabel(pm.getApplicationInfo(packageName, 0))
+                        pm.getApplicationLabel(pm.getApplicationInfo(packageName, 0))!!.toString()
                     } catch (_: Exception) {
                         packageName
                     },
                     versionName = pkgInfo.versionName,
-                    versionCode = pkgInfo.versionCode,
-                    isSystem = (pkgInfo.applicationInfo.flags and ApplicationInfo.FLAG_SYSTEM) != 0,
-                    uid = pkgInfo.applicationInfo.uid,
+                    versionCode = pkgInfo.versionCode.toLong(),
+                    isSystem = ((pkgInfo.applicationInfo ?: ApplicationInfo()).flags and ApplicationInfo.FLAG_SYSTEM) != 0,
+                    uid = (pkgInfo.applicationInfo ?: ApplicationInfo()).uid,
                 ),
                 firstInstallTime = pkgInfo.firstInstallTime,
                 lastUpdateTime = pkgInfo.lastUpdateTime,
-                requestedPermissions = pkgInfo.requestedPermissions?.toList() ?: emptyList(),
+                requestedPermissions = (pkgInfo.requestedPermissions ?: emptyArray()).toList(),
                 dataSizeBytes = null,
                 cacheSizeBytes = null,
             )
