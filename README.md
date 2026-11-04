@@ -13,14 +13,15 @@ como “No disponible”, nunca como un dato inventado.
 
 ## Estado
 
-**Spike 0 compilado — pendiente de probar en el teléfono.** GitHub Actions genera
-un APK con tema MIUIX y métricas reales de RAM/CPU/almacenamiento. El plan está
-validado y la Fase 1 (Overview + Device) es lo siguiente.
+**Spike 1 publicado — pendiente de validar en el teléfono.** GitHub Actions genera
+un APK con tema MIUIX, métricas reales de RAM/CPU/almacenamiento y barra inferior
+con iconos. El plan está validado y la Fase 1 (Overview + Device) es lo siguiente.
 
 - Package: `com.jonnyuun.processm`
 - Distribución: sideload (uso personal, fuera de Google Play)
 - Root: incluido en v1, siempre opt-in y con lista blanca.
-- APK de prueba: [v0.1.0-spike0](https://github.com/Jonnyu074a/process-m/releases/tag/v0.1.0-spike0)
+- APK de prueba: [v0.1.1-spike1](https://github.com/Jonnyu074a/process-m/releases/tag/v0.1.1-spike1)
+  (la versión anterior sigue en [v0.1.0-spike0](https://github.com/Jonnyu074a/process-m/releases/tag/v0.1.0-spike0))
 
 ## Documentación
 
@@ -51,6 +52,6 @@ se publica como artefacto `process-m-debug` y como Release.
 
 ## Próximo paso
 
-Instalar `v0.1.0-spike0` en el teléfono y medir arranque, memoria y fluidez para
-cerrar la decisión sobre MIUIX. Después, Fase 1 (Overview + Device con batería y
-estados de permiso, Koin).
+Instalar `v0.1.1-spike1` en el teléfono y comprobar la barra inferior con iconos,
+los márgenes y los insets. Después, cerrar la decisión sobre MIUIX y empezar la
+Fase 1 (Overview + Device con batería y estados de permiso, Koin).

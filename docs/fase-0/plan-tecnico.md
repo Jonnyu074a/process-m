@@ -3,7 +3,7 @@
 **Proyecto:** Process M (`com.jonnyuun.processm`)
 **Documento:** plan técnico de arranque
 **Fecha:** 2026-11-04
-**Estado:** validado por el usuario; Spike 0 en ejecución (scaffold + CI listos).
+**Estado:** validado por el usuario; Spike 1 en ejecución (scaffold + CI + UI base listos).
 
 > Este documento responde al encargo de Fase 0 del prompt maestro: tecnología,
 > SDK levels, módulos, viabilidad de MIUIX, matriz de capacidades, navegación,
@@ -427,6 +427,18 @@ Objetivo: eliminar las incógnitas que pueden invalidar el plan.
   para usar KGP 2.4.21.
 - Pendiente: instalar en el teléfono y anotar arranque/memoria/fluidez; con eso
   se cierra la decisión sobre MIUIX.
+
+#### Seguimiento del spike: Spike 1 (2026-11-04)
+
+- Primera prueba real en el teléfono: el contenido se percibía pegado a los
+  márgenes y la barra inferior era solo texto, sin iconos por apartado.
+- Corrección: `NavigationBar`/`NavigationBarItem` nativos de MIUIX, con icono y
+  etiqueta, inset de barra de navegación y divisor; cinco vectores propios.
+- Overview: 20 dp de margen horizontal, `consumeWindowInsets(padding)` en el
+  contenido y `Scaffold` con la barra MIUIX como `bottomBar`.
+- Build correcto en 1m32s (run `41892851356`); Release
+  https://github.com/Jonnyu074a/process-m/releases/tag/v0.1.1-spike1
+- Pendiente: revalidar en el teléfono la barra con iconos y los márgenes.
 
 ---
 
