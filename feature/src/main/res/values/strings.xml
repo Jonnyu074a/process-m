@@ -26,6 +26,7 @@
     <string name="device_permission_granted">Concedido</string>
     <string name="device_permission_denied">No concedido</string>
     <string name="device_permission_open_settings">Abrir ajustes</string>
+    <string name="device_permission_none">En nivel Estándar no se solicitan permisos sensibles.</string>
     <string name="memory_title">Memoria RAM</string>
     <string name="cpu_title">CPU</string>
     <string name="storage_title">Almacenamiento</string>

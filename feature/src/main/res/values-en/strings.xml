@@ -26,6 +26,7 @@
     <string name="device_permission_granted">Granted</string>
     <string name="device_permission_denied">Not granted</string>
     <string name="device_permission_open_settings">Open settings</string>
+    <string name="device_permission_none">Standard level does not request sensitive permissions.</string>
     <string name="memory_title">RAM</string>
     <string name="cpu_title">CPU</string>
     <string name="storage_title">Storage</string>

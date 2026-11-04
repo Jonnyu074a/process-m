@@ -126,6 +126,12 @@ fun DeviceScreen(state: OverviewUiState, modifier: Modifier = Modifier) {
                     },
                 )
             }
+            Spacer(Modifier.height(8.dp))
+            Text(
+                text = stringResource(R.string.device_permission_none),
+                fontSize = 12.sp,
+                color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
+            )
         }
 
         MemoryCard(state.memory, state.memoryHistory)
