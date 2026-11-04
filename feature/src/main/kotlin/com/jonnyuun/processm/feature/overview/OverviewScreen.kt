@@ -49,7 +49,7 @@ import com.jonnyuun.processm.core.model.StorageSnapshot
 import com.jonnyuun.processm.core.model.UnavailableReason
 import com.jonnyuun.processm.domain.MetricsRepository
 import com.jonnyuun.processm.domain.SettingsRepository
-import org.koin.androidx.compose.koinInject
+import org.koin.compose.koinInject
 import com.jonnyuun.processm.feature.device.DeviceScreen
 import java.time.Instant
 import java.time.ZoneId
