@@ -47,9 +47,12 @@ import com.jonnyuun.processm.core.model.MemorySnapshot
 import com.jonnyuun.processm.core.model.Metric
 import com.jonnyuun.processm.core.model.StorageSnapshot
 import com.jonnyuun.processm.core.model.UnavailableReason
+import com.jonnyuun.processm.domain.AppsRepository
 import com.jonnyuun.processm.domain.MetricsRepository
 import com.jonnyuun.processm.domain.SettingsRepository
 import org.koin.compose.koinInject
+import com.jonnyuun.processm.feature.apps.AppsScreen
+import com.jonnyuun.processm.feature.apps.AppsViewModel
 import com.jonnyuun.processm.feature.device.DeviceScreen
 import java.time.Instant
 import java.time.ZoneId
@@ -67,19 +70,25 @@ import top.yukonga.miuix.kmp.basic.TextButton
 import top.yukonga.miuix.kmp.theme.MiuixTheme
 
 @Composable
-fun OverviewRoute(repository: MetricsRepository, settings: SettingsRepository) {
+fun OverviewRoute(repository: MetricsRepository, settings: SettingsRepository, appsRepository: AppsRepository) {
     val viewModel: OverviewViewModel = viewModel(
         factory = OverviewViewModel.factory(repository, settings),
     )
     val state by viewModel.state.collectAsStateWithLifecycle()
-    OverviewScreen(state = state)
+    OverviewScreen(state = state, appsRepository = appsRepository)
 }
 
 @Composable
-fun OverviewScreen(state: OverviewUiState) {
+fun OverviewScreen(state: OverviewUiState, appsRepository: AppsRepository) {
     var selectedTab by rememberSaveable { mutableIntStateOf(0) }
     var showSettings by rememberSaveable { mutableStateOf(false) }
     val settings = koinInject<com.jonnyuun.processm.domain.SettingsRepository>()
+    val appsViewModel: AppsViewModel = remember {
+        androidx.lifecycle.viewmodel.compose.viewModel(
+            factory = AppsViewModel.factory(appsRepository),
+        )
+    }
+    val appsState by appsViewModel.state.collectAsStateWithLifecycle()
 
     if (showSettings) {
         SettingsScreen(onBack = { showSettings = false }, settings = settings)
@@ -113,6 +122,10 @@ fun OverviewScreen(state: OverviewUiState) {
                     .padding(padding)
                     .consumeWindowInsets(padding),
             )
+            2 -> AppsScreen(
+                state = appsState,
+                onQueryChanged = { appsViewModel.onQueryChanged(it) },
+            )
             4 -> DeviceScreen(
                 state = state,
                 modifier = Modifier
@@ -130,9 +143,6 @@ fun OverviewScreen(state: OverviewUiState) {
         }
     }
 }
-
-@Composable
-private fun OverviewContent(state: OverviewUiState, modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
             .verticalScroll(rememberScrollState())

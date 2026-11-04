@@ -7,6 +7,7 @@ import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.jonnyuun.processm.core.designsystem.theme.ProcessMTheme
+import com.jonnyuun.processm.domain.AppsRepository
 import com.jonnyuun.processm.domain.MetricsRepository
 import com.jonnyuun.processm.domain.SettingsRepository
 import com.jonnyuun.processm.feature.overview.OverviewRoute
@@ -24,10 +25,11 @@ class MainActivity : ComponentActivity() {
 
         val repository: MetricsRepository by inject()
         val settings: SettingsRepository by inject()
+        val appsRepository: AppsRepository by inject()
 
         setContent {
             ProcessMTheme {
-                OverviewRoute(repository = repository, settings = settings)
+                OverviewRoute(repository = repository, settings = settings, appsRepository = appsRepository)
             }
         }
     }

@@ -46,6 +46,16 @@
     <string name="settings_privacy_body">Exportar y borrar datos. Próximamente.</string>
     <string name="settings_about">Acerca de</string>
     <string name="settings_about_body">Versión, licencias y fuentes. Próximamente.</string>
+    <string name="apps_title">Aplicaciones</string>
+    <string name="apps_subtitle">Apps instaladas</string>
+    <string name="apps_section">Aplicaciones instaladas</string>
+    <string name="apps_search">Buscar aplicaciones</string>
+    <string name="apps_usage_needed">Acceso a datos de uso</string>
+    <string name="apps_usage_body">Concede el permiso para ver el listado completo de apps y su uso.</string>
+    <string name="apps_usage_open_settings">Abrir ajustes de uso</string>
+    <string name="apps_no_results">No se encontraron aplicaciones</string>
+    <string name="apps_system">Sistema</string>
+    <string name="apps_user">Usuario</string>
     <string name="memory_title">Memoria RAM</string>
     <string name="cpu_title">CPU</string>
     <string name="storage_title">Almacenamiento</string>

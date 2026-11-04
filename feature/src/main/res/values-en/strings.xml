@@ -46,6 +46,16 @@
     <string name="settings_privacy_body">Export and delete data. Coming soon.</string>
     <string name="settings_about">About</string>
     <string name="settings_about_body">Version, licenses and sources. Coming soon.</string>
+    <string name="apps_title">Applications</string>
+    <string name="apps_subtitle">Installed apps</string>
+    <string name="apps_section">Installed applications</string>
+    <string name="apps_search">Search applications</string>
+    <string name="apps_usage_needed">Usage access</string>
+    <string name="apps_usage_body">Grant permission to see the full app list and usage.</string>
+    <string name="apps_usage_open_settings">Open usage settings</string>
+    <string name="apps_no_results">No applications found</string>
+    <string name="apps_system">System</string>
+    <string name="apps_user">User</string>
     <string name="memory_title">RAM</string>
     <string name="cpu_title">CPU</string>
     <string name="storage_title">Storage</string>

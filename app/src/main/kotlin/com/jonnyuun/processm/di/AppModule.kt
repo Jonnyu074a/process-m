@@ -9,8 +9,10 @@ import com.jonnyuun.processm.core.system.CpuSource
 import com.jonnyuun.processm.core.system.MemorySource
 import com.jonnyuun.processm.core.system.ProcCpuSource
 import com.jonnyuun.processm.core.system.StorageSource
+import com.jonnyuun.processm.data.AppsRepositoryImpl
 import com.jonnyuun.processm.data.DataStoreSettingsRepository
 import com.jonnyuun.processm.data.SystemMetricsRepository
+import com.jonnyuun.processm.domain.AppsRepository
 import com.jonnyuun.processm.domain.MetricsRepository
 import com.jonnyuun.processm.domain.SettingsRepository
 import org.koin.android.ext.koin.androidContext
@@ -22,6 +24,7 @@ val appModule = module {
     single<StorageSource> { AndroidStorageSource() }
     single<BatterySource> { AndroidBatterySource(androidContext()) }
     single<SettingsRepository> { DataStoreSettingsRepository(androidContext()) }
+    single<AppsRepository> { AppsRepositoryImpl(androidContext()) }
     single<MetricsRepository> {
         SystemMetricsRepository(
             memorySource = get(),
