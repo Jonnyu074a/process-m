@@ -54,5 +54,3 @@ class AndroidProcessSource(
         }.sortedByDescending { it.ramBytes }
     }
 }
-EOF
-echo done
