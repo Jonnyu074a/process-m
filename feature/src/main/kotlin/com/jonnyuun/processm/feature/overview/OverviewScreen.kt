@@ -3,7 +3,6 @@ package com.jonnyuun.processm.feature.overview
 import android.content.Context
 import android.os.BatteryManager
 import android.os.Build
-import android.os.Build
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -320,5 +319,5 @@ private fun formatTime(instant: Instant): String =
         .format(instant)
 
 @Suppress("UNCHECKED_CAST")
-internal fun <T> Metric<T>?.availableValue(): T? =
+fun <T> Metric<T>?.availableValue(): T? =
     (this as? Metric.Available<*>)?.value as T?

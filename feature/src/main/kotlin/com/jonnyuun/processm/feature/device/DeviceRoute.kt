@@ -34,6 +34,7 @@ import com.jonnyuun.processm.core.model.Metric
 import com.jonnyuun.processm.domain.MetricsRepository
 import com.jonnyuun.processm.feature.overview.CpuCard
 import com.jonnyuun.processm.feature.overview.DeviceOverviewCard
+import com.jonnyuun.processm.feature.overview.availableValue
 import com.jonnyuun.processm.feature.overview.MemoryCard
 import com.jonnyuun.processm.feature.overview.OverviewUiState
 import com.jonnyuun.processm.feature.overview.OverviewViewModel
