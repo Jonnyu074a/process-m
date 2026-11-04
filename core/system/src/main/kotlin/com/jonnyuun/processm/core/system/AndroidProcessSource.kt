@@ -1,6 +1,7 @@
 package com.jonnyuun.processm.core.system
 
 import android.app.ActivityManager
+import android.app.ApplicationInfo
 import android.content.Context
 import android.content.pm.PackageManager
 import com.jonnyuun.processm.core.model.ProcessSnapshot
@@ -37,7 +38,7 @@ class AndroidProcessSource(
             val isSystem = packageName?.let { pkg ->
                 try {
                     val ai = pm.getApplicationInfo(pkg, 0)
-                    (ai.flags and android.app.ApplicationInfo.FLAG_SYSTEM) != 0
+                    (ai.flags and ApplicationInfo.FLAG_SYSTEM) != 0
                 } catch (_: Exception) {
                     false
                 }

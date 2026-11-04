@@ -6,4 +6,3 @@ import com.jonnyuun.processm.core.model.ProcessSnapshot
 interface ProcessRepository {
     suspend fun runningProcesses(): List<ProcessSnapshot>
 }
-EOF
