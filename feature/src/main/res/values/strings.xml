@@ -10,6 +10,13 @@
     <string name="nav_settings">Ajustes</string>
 
     <string name="overview_section">Estado del dispositivo</string>
+    <string name="device_overview_title">Dispositivo</string>
+    <string name="device_android">Android %1$s · API %2$d</string>
+    <string name="device_battery">Batería</string>
+    <string name="percent_format">%1$d %%</string>
+    <string name="device_battery_unavailable">Batería: no disponible</string>
+    <string name="device_ram_total">RAM total</string>
+    <string name="device_storage_total">Almacenamiento total</string>
     <string name="memory_title">Memoria RAM</string>
     <string name="cpu_title">CPU</string>
     <string name="storage_title">Almacenamiento</string>
