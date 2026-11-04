@@ -143,6 +143,9 @@ fun OverviewScreen(state: OverviewUiState, appsRepository: AppsRepository) {
         }
     }
 }
+
+@Composable
+private fun OverviewContent(state: OverviewUiState, modifier: Modifier = Modifier) {
     Column(
         modifier = modifier
             .verticalScroll(rememberScrollState())
