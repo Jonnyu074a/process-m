@@ -20,8 +20,8 @@ Fase 1: estados de permiso y pulido de Overview/Device.
 - Package: `com.jonnyuun.processm`
 - Distribución: sideload (uso personal, fuera de Google Play)
 - Root: incluido en v1, siempre opt-in y con lista blanca.
-- APK de prueba: [v0.2.0-phase1](https://github.com/Jonnyu074a/process-m/releases/tag/v0.2.0-phase1)
-  (anteriores: [v0.1.4-spike4](https://github.com/Jonnyu074a/process-m/releases/tag/v0.1.4-spike4), ...)
+- APK de prueba: [v0.2.1-phase1](https://github.com/Jonnyu074a/process-m/releases/tag/v0.2.1-phase1)
+  (anteriores: [v0.2.0-phase1](https://github.com/Jonnyu074a/process-m/releases/tag/v0.2.0-phase1), ...)
 
 ## Documentación
 
