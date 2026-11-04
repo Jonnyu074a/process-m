@@ -13,13 +13,13 @@ como “No disponible”, nunca como un dato inventado.
 
 ## Estado
 
-**Fase 3 en curso — primera entrega.** Pantalla de Aplicaciones con listado de apps instaladas, búsqueda y diferenciación sistema/usuario. Siguiente: detalle de aplicación y pantalla de Procesos.
+**Fase 3 completa — primera entrega.** Pantalla de Aplicaciones con listado de apps instaladas y procesos en ejecución con consumo de RAM, búsqueda por nombre/paquete y diferenciación sistema/usuario. Siguiente: detalle de aplicación y pantalla de Procesos (Fase 4).
 
 - Package: `com.jonnyuun.processm`
 - Distribución: sideload (uso personal, fuera de Google Play)
 - Root: incluido en v1, siempre opt-in y con lista blanca.
-- APK de prueba: [v0.4.1-phase3](https://github.com/Jonnyu074a/process-m/releases/tag/v0.4.1-phase3)
-  (anteriores: [v0.4.0-phase3](https://github.com/Jonnyu074a/process-m/releases/tag/v0.4.0-phase3), ...)
+- APK de prueba: [v0.4.2-phase3](https://github.com/Jonnyu074a/process-m/releases/tag/v0.4.2-phase3)
+  (anteriores: [v0.4.1-phase3](https://github.com/Jonnyu074a/process-m/releases/tag/v0.4.1-phase3), ...)
 
 ## Documentación
 
