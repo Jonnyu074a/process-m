@@ -1,7 +1,6 @@
 package com.jonnyuun.processm.feature.apps
 
 import android.app.AppOpsManager
-import android.app.ApplicationInfo
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -23,6 +22,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.background
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.Image
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -30,7 +31,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.shape.RoundedCornerShape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -39,18 +39,21 @@ import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.jonnyuun.processm.core.common.formatBytes
 import com.jonnyuun.processm.core.model.AppSummary
-import com.jonnyuun.processm.core.system.ProcessSnapshot
+import com.jonnyuun.processm.core.model.ProcessSnapshot
 import com.jonnyuun.processm.domain.AppsRepository
 import com.jonnyuun.processm.domain.ProcessRepository
 import com.jonnyuun.processm.feature.R
 import top.yukonga.miuix.kmp.basic.Card
+import top.yukonga.miuix.kmp.basic.NavigationBar
+import top.yukonga.miuix.kmp.basic.NavigationBarItem
 import top.yukonga.miuix.kmp.basic.Scaffold
 import top.yukonga.miuix.kmp.basic.SmallTopAppBar
 import top.yukonga.miuix.kmp.basic.Text
 import top.yukonga.miuix.kmp.basic.TextButton
 import top.yukonga.miuix.kmp.theme.MiuixTheme
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.Image
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
 
 @Composable
 fun AppsRoute(appsRepository: AppsRepository, processRepository: ProcessRepository) {
@@ -82,10 +85,20 @@ fun AppsScreen(
             )
         },
         bottomBar = {
-            top.yukonga.miuix.kmp.basic.NavigationBar {
-                // No bottom tabs here; the parent OverviewScreen owns the main bottom bar.
-                // This empty bottomBar reserves the navigation-bar inset so content does not
-                // overlap the system gesture area.
+            NavigationBar {
+                val items = listOf(
+                    Pair(R.string.nav_installed, R.drawable.ic_nav_apps),
+                    Pair(R.string.nav_running, R.drawable.ic_nav_monitor),
+                )
+                var selectedAppTab by remember { mutableIntStateOf(0) }
+                items.forEachIndexed { index, item ->
+                    NavigationBarItem(
+                        selected = index == selectedAppTab,
+                        onClick = { selectedAppTab = index },
+                        icon = ImageVector.vectorResource(item.second),
+                        label = stringResource(item.first),
+                    )
+                }
             }
         },
     ) { padding ->
@@ -96,6 +109,8 @@ fun AppsScreen(
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
+            var selectedAppTab by remember { mutableIntStateOf(0) }
+
             Text(
                 text = stringResource(R.string.apps_section),
                 fontSize = 13.sp,
@@ -107,7 +122,7 @@ fun AppsScreen(
             if (!hasUsageStats) {
                 Card(
                     modifier = Modifier.fillMaxWidth(),
-                    insideMargin = androidx.compose.foundation.layout.PaddingValues(horizontal = 16.dp, vertical = 12.dp),
+                    insideMargin = PaddingValues(horizontal = 16.dp, vertical = 12.dp),
                 ) {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         Text(
@@ -133,17 +148,19 @@ fun AppsScreen(
                 }
             }
 
-            InstalledAppsSection(
-                state = state,
-                onQueryChanged = onQueryChanged,
-                pm = pm,
-            )
-
-            RunningAppsSection(
-                state = state,
-                onQueryChanged = onRunningQueryChanged,
-                pm = pm,
-            )
+            if (selectedAppTab == 0) {
+                InstalledAppsSection(
+                    state = state,
+                    onQueryChanged = onQueryChanged,
+                    pm = pm,
+                )
+            } else {
+                RunningAppsSection(
+                    state = state,
+                    onQueryChanged = onRunningQueryChanged,
+                    pm = pm,
+                )
+            }
         }
     }
 }
@@ -206,7 +223,7 @@ private fun InstalledAppRow(app: AppSummary, pm: PackageManager) {
 
     Card(
         modifier = Modifier.fillMaxWidth(),
-        insideMargin = androidx.compose.foundation.layout.PaddingValues(horizontal = 16.dp, vertical = 12.dp),
+        insideMargin = PaddingValues(horizontal = 16.dp, vertical = 12.dp),
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -315,7 +332,7 @@ private fun RunningAppRow(proc: ProcessSnapshot, pm: PackageManager) {
 
     Card(
         modifier = Modifier.fillMaxWidth(),
-        insideMargin = androidx.compose.foundation.layout.PaddingValues(horizontal = 16.dp, vertical = 12.dp),
+        insideMargin = PaddingValues(horizontal = 16.dp, vertical = 12.dp),
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -373,4 +390,3 @@ private fun hasUsageStatsPermission(context: Context): Boolean {
     return mode == AppOpsManager.MODE_ALLOWED
 }
 EOF
-echo done

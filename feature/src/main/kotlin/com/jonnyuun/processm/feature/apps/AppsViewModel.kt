@@ -6,17 +6,17 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.jonnyuun.processm.core.model.AppSummary
-import com.jonnyuun.processm.core.system.ProcessSnapshot
+import com.jonnyuun.processm.core.model.ProcessSnapshot
 import com.jonnyuun.processm.domain.AppsRepository
 import com.jonnyuun.processm.domain.ProcessRepository
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.delay
 
 data class AppsUiState(
     val apps: List<AppSummary> = emptyList(),
@@ -82,10 +82,8 @@ class AppsViewModel(
                     }
                 }
                 _state.update { it.copy(running = filtered) }
-                // Re-poll cada intervalo corto para mostrar uso de RAM en tiempo real.
-                val delayMs = 2_000L
                 if (isActive) {
-                    kotlinx.coroutines.delay(delayMs)
+                    delay(2_000L)
                 }
             }
         }
@@ -99,4 +97,3 @@ class AppsViewModel(
     }
 }
 EOF
-echo done
