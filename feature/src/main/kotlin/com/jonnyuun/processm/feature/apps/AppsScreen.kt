@@ -22,7 +22,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.background
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.foundation.image.rememberImagePainter
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.Image
 import androidx.compose.runtime.Composable
@@ -33,6 +32,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -220,7 +220,7 @@ private fun InstalledAppRow(app: AppSummary, pm: PackageManager) {
         val canvas = Canvas(bitmap)
         drawable.setBounds(0, 0, w, h)
         drawable.draw(canvas)
-        rememberImagePainter(bitmap = ImageBitmap.imageBitmap(bitmap))
+        BitmapPainter(ImageBitmap.imageBitmap(bitmap))
     }
 
     Card(
@@ -320,7 +320,7 @@ private fun RunningAppRow(proc: ProcessSnapshot, pm: PackageManager) {
             val w = 24
             val h = 24
             val bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
-            rememberImagePainter(bitmap = ImageBitmap.imageBitmap(bitmap))
+            BitmapPainter(ImageBitmap.imageBitmap(bitmap))
         } else {
             val w = drawable.intrinsicWidth.coerceAtLeast(1)
             val h = drawable.intrinsicHeight.coerceAtLeast(1)
@@ -328,7 +328,7 @@ private fun RunningAppRow(proc: ProcessSnapshot, pm: PackageManager) {
             val canvas = Canvas(bitmap)
             drawable.setBounds(0, 0, w, h)
             drawable.draw(canvas)
-            rememberImagePainter(bitmap = ImageBitmap.imageBitmap(bitmap))
+            BitmapPainter(ImageBitmap.imageBitmap(bitmap))
         }
     }
 

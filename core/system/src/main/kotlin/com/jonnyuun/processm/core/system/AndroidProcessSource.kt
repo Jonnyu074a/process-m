@@ -1,8 +1,8 @@
 package com.jonnyuun.processm.core.system
 
 import android.app.ActivityManager
-import android.app.ApplicationInfo
 import android.content.Context
+import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import com.jonnyuun.processm.core.model.ProcessSnapshot
 
@@ -22,7 +22,6 @@ class AndroidProcessSource(
             emptyArray()
         }
 
-        // getProcessMemoryInfo devuelve un array en el mismo orden que pids
         val memInfoMap = pids.indices.associate { idx ->
             pids[idx] to memInfos[idx]
         }.toMap()
@@ -30,14 +29,13 @@ class AndroidProcessSource(
         return running.map { proc ->
             val mi = memInfoMap[proc.pid]
             val ramBytes = mi?.let {
-                // dalvikPrivateDirty + nativePrivateDirty en KB → bytes
                 (it.dalvikPrivateDirty + it.nativePrivateDirty) * 1024L
             } ?: 0L
 
             val packageName = proc.pkgList.firstOrNull()
             val isSystem = packageName?.let { pkg ->
                 try {
-                    val ai = pm.getApplicationInfo(pkg, 0)
+                    val ai: ApplicationInfo = pm.getApplicationInfo(pkg, 0)
                     (ai.flags and ApplicationInfo.FLAG_SYSTEM) != 0
                 } catch (_: Exception) {
                     false
