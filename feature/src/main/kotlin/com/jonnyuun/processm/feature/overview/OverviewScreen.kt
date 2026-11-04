@@ -1,17 +1,12 @@
 package com.jonnyuun.processm.feature.overview
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -20,8 +15,9 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -43,6 +39,8 @@ import com.jonnyuun.processm.feature.R
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
+import top.yukonga.miuix.kmp.basic.NavigationBar
+import top.yukonga.miuix.kmp.basic.NavigationBarItem
 import top.yukonga.miuix.kmp.basic.Scaffold
 import top.yukonga.miuix.kmp.basic.SmallTopAppBar
 import top.yukonga.miuix.kmp.basic.Text
@@ -75,12 +73,18 @@ fun OverviewScreen(state: OverviewUiState) {
         if (selectedTab == 0) {
             OverviewContent(
                 state = state,
-                modifier = Modifier.fillMaxSize().padding(padding),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(padding)
+                    .consumeWindowInsets(padding),
             )
         } else {
             PlaceholderContent(
                 title = tabLabel(selectedTab),
-                modifier = Modifier.fillMaxSize().padding(padding),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(padding)
+                    .consumeWindowInsets(padding),
             )
         }
     }
@@ -91,7 +95,7 @@ private fun OverviewContent(state: OverviewUiState, modifier: Modifier = Modifie
     Column(
         modifier = modifier
             .verticalScroll(rememberScrollState())
-            .padding(horizontal = 16.dp, vertical = 12.dp),
+            .padding(horizontal = 20.dp, vertical = 12.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         Text(
@@ -220,39 +224,25 @@ private fun reasonText(unavailable: Metric.Unavailable): String {
 private fun sourceLine(metric: Metric<*>?): String? =
     metric?.let { stringResource(R.string.source_format, it.source.label) }
 
+private data class NavItem(val labelRes: Int, val iconRes: Int)
+
+private val navItems = listOf(
+    NavItem(R.string.nav_overview, R.drawable.ic_nav_overview),
+    NavItem(R.string.nav_apps, R.drawable.ic_nav_apps),
+    NavItem(R.string.nav_processes, R.drawable.ic_nav_processes),
+    NavItem(R.string.nav_monitor, R.drawable.ic_nav_monitor),
+    NavItem(R.string.nav_settings, R.drawable.ic_nav_settings),
+)
+
 @Composable
 private fun ProcessMBottomBar(selected: Int, onSelect: (Int) -> Unit) {
-    val tabs = listOf(
-        R.string.nav_overview,
-        R.string.nav_apps,
-        R.string.nav_processes,
-        R.string.nav_monitor,
-        R.string.nav_settings,
-    )
-
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(MiuixTheme.colorScheme.surface)
-            .navigationBarsPadding()
-            .padding(vertical = 6.dp),
-        horizontalArrangement = Arrangement.SpaceEvenly,
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        tabs.forEachIndexed { index, labelRes ->
-            Text(
-                text = stringResource(labelRes),
-                fontSize = 11.sp,
-                fontWeight = if (index == selected) FontWeight.SemiBold else FontWeight.Normal,
-                color = if (index == selected) {
-                    MiuixTheme.colorScheme.primary
-                } else {
-                    MiuixTheme.colorScheme.onSurfaceVariantSummary
-                },
-                modifier = Modifier
-                    .clip(RoundedCornerShape(8.dp))
-                    .clickable { onSelect(index) }
-                    .padding(horizontal = 10.dp, vertical = 6.dp),
+    NavigationBar {
+        navItems.forEachIndexed { index, item ->
+            NavigationBarItem(
+                selected = index == selected,
+                onClick = { onSelect(index) },
+                icon = ImageVector.vectorResource(item.iconRes),
+                label = stringResource(item.labelRes),
             )
         }
     }
