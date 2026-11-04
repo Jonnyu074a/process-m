@@ -22,6 +22,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.foundation.background
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.image.rememberImagePainter
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.Image
 import androidx.compose.runtime.Composable
@@ -31,8 +32,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Bitmap
 import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -212,15 +213,15 @@ private fun InstalledAppsSection(
 
 @Composable
 private fun InstalledAppRow(app: AppSummary, pm: PackageManager) {
-    val painter = remember(app.packageName) {
+    val imageBitmap = remember(app.packageName) {
         val drawable = pm.getApplicationIcon(app.packageName)
         val w = drawable.intrinsicWidth.coerceAtLeast(1)
         val h = drawable.intrinsicHeight.coerceAtLeast(1)
-        val bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
-        val canvas = Canvas(bitmap)
+        val bitmap = android.graphics.Bitmap.createBitmap(w, h, android.graphics.Bitmap.Config.ARGB_8888)
+        val canvas = android.graphics.Canvas(bitmap)
         drawable.setBounds(0, 0, w, h)
         drawable.draw(canvas)
-        BitmapPainter(ImageBitmap.imageBitmap(bitmap))
+        ImageBitmap.imageBitmap(bitmap)
     }
 
     Card(
@@ -235,7 +236,7 @@ private fun InstalledAppRow(app: AppSummary, pm: PackageManager) {
                 contentAlignment = Alignment.Center,
             ) {
                 Image(
-                    painter = painter,
+                    painter = rememberImagePainter(image = imageBitmap),
                     contentDescription = null,
                     modifier = Modifier.size(24.dp),
                 )
@@ -310,7 +311,7 @@ private fun RunningAppsSection(
 
 @Composable
 private fun RunningAppRow(proc: ProcessSnapshot, pm: PackageManager) {
-    val painter = remember(proc.packageName) {
+    val imageBitmap = remember(proc.packageName) {
         val drawable: android.graphics.drawable.Drawable? = try {
             pm.getApplicationIcon(proc.packageName ?: proc.processName)
         } catch (_: Exception) {
@@ -319,16 +320,16 @@ private fun RunningAppRow(proc: ProcessSnapshot, pm: PackageManager) {
         if (drawable == null) {
             val w = 24
             val h = 24
-            val bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
-            BitmapPainter(ImageBitmap.imageBitmap(bitmap))
+            val bitmap = android.graphics.Bitmap.createBitmap(w, h, android.graphics.Bitmap.Config.ARGB_8888)
+            ImageBitmap.imageBitmap(bitmap)
         } else {
             val w = drawable.intrinsicWidth.coerceAtLeast(1)
             val h = drawable.intrinsicHeight.coerceAtLeast(1)
-            val bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
-            val canvas = Canvas(bitmap)
+            val bitmap = android.graphics.Bitmap.createBitmap(w, h, android.graphics.Bitmap.Config.ARGB_8888)
+            val canvas = android.graphics.Canvas(bitmap)
             drawable.setBounds(0, 0, w, h)
             drawable.draw(canvas)
-            BitmapPainter(ImageBitmap.imageBitmap(bitmap))
+            ImageBitmap.imageBitmap(bitmap)
         }
     }
 
@@ -344,7 +345,7 @@ private fun RunningAppRow(proc: ProcessSnapshot, pm: PackageManager) {
                 contentAlignment = Alignment.Center,
             ) {
                 Image(
-                    painter = painter,
+                    painter = rememberImagePainter(image = imageBitmap),
                     contentDescription = null,
                     modifier = Modifier.size(24.dp),
                 )
