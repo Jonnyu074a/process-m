@@ -119,5 +119,3 @@ private fun SettingsSection(titleRes: Int, bodyRes: Int) {
         )
     }
 }
-EOF
-echo done

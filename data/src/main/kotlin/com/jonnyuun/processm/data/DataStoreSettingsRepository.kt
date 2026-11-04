@@ -23,5 +23,3 @@ class DataStoreSettingsRepository(
         context.dataStore.edit { prefs -> prefs[key] = value }
     }
 }
-EOF
-echo done
