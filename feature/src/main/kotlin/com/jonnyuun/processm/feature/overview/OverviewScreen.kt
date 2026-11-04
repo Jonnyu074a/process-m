@@ -83,11 +83,9 @@ fun OverviewScreen(state: OverviewUiState, appsRepository: AppsRepository) {
     var selectedTab by rememberSaveable { mutableIntStateOf(0) }
     var showSettings by rememberSaveable { mutableStateOf(false) }
     val settings = koinInject<com.jonnyuun.processm.domain.SettingsRepository>()
-    val appsViewModel: AppsViewModel = remember {
-        androidx.lifecycle.viewmodel.compose.viewModel(
-            factory = AppsViewModel.factory(appsRepository),
-        )
-    }
+    val appsViewModel: AppsViewModel = androidx.lifecycle.viewmodel.compose.viewModel(
+        factory = AppsViewModel.factory(appsRepository),
+    )
     val appsState by appsViewModel.state.collectAsStateWithLifecycle()
 
     if (showSettings) {

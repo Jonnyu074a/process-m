@@ -11,10 +11,6 @@ import androidx.compose.foundation.layout.verticalScroll
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.text.KeyboardType
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldValue
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -41,6 +37,7 @@ import top.yukonga.miuix.kmp.basic.Text
 import top.yukonga.miuix.kmp.basic.TextButton
 import top.yukonga.miuix.kmp.theme.MiuixTheme
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.ui.res.stringResource
 
 @Composable
@@ -73,15 +70,6 @@ fun AppsScreen(
             color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
         )
 
-        TextField(
-            value = TextFieldValue(state.query),
-            onValueChange = { onQueryChanged(it.text) },
-            label = { Text(text = stringResource(R.string.apps_search)) },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-            singleLine = true,
-            modifier = Modifier.fillMaxWidth(),
-        )
-
         val context = LocalContext.current
         val hasUsageStats = hasUsageStatsPermission(context)
 
@@ -103,7 +91,7 @@ fun AppsScreen(
                         color = MiuixTheme.colorScheme.onSurfaceSecondary,
                         textAlign = TextAlign.Center,
                     )
-                    androidx.compose.foundation.layout.Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier.height(8.dp))
                     TextButton(
                         text = stringResource(R.string.apps_usage_open_settings),
                         onClick = {
@@ -145,7 +133,7 @@ private fun AppRow(app: AppSummary) {
             verticalAlignment = Alignment.CenterVertically,
         ) {
             androidx.compose.foundation.layout.Box(
-                modifier = Modifier.size(32.dp).background(Color(0xFF121212), shape = RoundedCornerShape(8.dp)),
+                modifier = Modifier.size(32.dp).background(MiuixTheme.colorScheme.surfaceVariant, shape = RoundedCornerShape(8.dp)),
                 contentAlignment = Alignment.Center,
             ) {
                 Text(
@@ -155,7 +143,7 @@ private fun AppRow(app: AppSummary) {
                     color = MiuixTheme.colorScheme.primary,
                 )
             }
-            androidx.compose.foundation.layout.Spacer(modifier = Modifier.width(12.dp))
+            Spacer(modifier = Modifier.width(12.dp))
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = app.label,

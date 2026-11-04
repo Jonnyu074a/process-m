@@ -3,6 +3,8 @@ package com.jonnyuun.processm.data
 import android.content.Context
 import com.jonnyuun.processm.core.system.AndroidAppsSource
 import com.jonnyuun.processm.domain.AppsRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class AppsRepositoryImpl(
     private val context: Context,
