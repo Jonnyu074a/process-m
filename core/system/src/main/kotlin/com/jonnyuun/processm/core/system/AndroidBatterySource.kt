@@ -36,5 +36,3 @@ class AndroidBatterySource(
         }
     }
 }
-EOF
-echo done
