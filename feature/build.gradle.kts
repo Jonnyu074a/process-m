@@ -8,7 +8,7 @@ plugins {
 
 android {
     namespace = "com.jonnyuun.processm.feature"
-    compileSdk = 36
+    compileSdk = 37
 
     defaultConfig {
         minSdk = 26
