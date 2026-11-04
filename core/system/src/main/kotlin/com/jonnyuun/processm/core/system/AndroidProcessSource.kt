@@ -4,8 +4,6 @@ import android.app.ActivityManager
 import android.app.ApplicationInfo
 import android.content.Context
 import android.content.pm.PackageManager
-import com.jonnyuun.processm.core.model.MetricKind
-import java.time.Instant
 
 class AndroidProcessSource(
     private val context: Context,
@@ -17,16 +15,22 @@ class AndroidProcessSource(
         val running = am.runningAppProcesses ?: return emptyList()
         val pids = running.map { it.pid }.toIntArray()
 
-        val memInfo = if (pids.isNotEmpty()) {
-            am.getProcessMemoryInfo(pids).associate { it.pid to it }
+        val memInfos = if (pids.isNotEmpty()) {
+            am.getProcessMemoryInfo(pids)
         } else {
-            emptyMap()
+            emptyArray()
         }
 
+        // getProcessMemoryInfo devuelve un array en el mismo orden que pids
+        val memInfoMap = pids.indices.associate { idx ->
+            pids[idx] to memInfos[idx]
+        }.toMap()
+
         return running.map { proc ->
-            val ramBytes = memInfo[proc.pid]?.let { mi ->
+            val mi = memInfoMap[proc.pid]
+            val ramBytes = mi?.let {
                 // dalvikPrivateDirty + nativePrivateDirty en KB → bytes
-                (mi.dalvikPrivateDirty + mi.nativePrivateDirty) * 1024L
+                (it.dalvikPrivateDirty + it.nativePrivateDirty) * 1024L
             } ?: 0L
 
             val packageName = proc.pkgList.firstOrNull()
@@ -41,7 +45,7 @@ class AndroidProcessSource(
 
             ProcessSnapshot(
                 pid = proc.pid,
-                processName = proc.processName,
+                processName = proc.processName ?: "",
                 packageName = packageName,
                 importance = proc.importance,
                 ramBytes = ramBytes,

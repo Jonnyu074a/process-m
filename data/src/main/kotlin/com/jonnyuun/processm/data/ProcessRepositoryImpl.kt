@@ -18,5 +18,3 @@ class ProcessRepositoryImpl(
             source.read()
         }
 }
-EOF
-echo done

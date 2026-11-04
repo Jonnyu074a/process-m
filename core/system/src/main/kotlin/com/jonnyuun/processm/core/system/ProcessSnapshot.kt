@@ -9,5 +9,3 @@ data class ProcessSnapshot(
     val ramBytes: Long,
     val isSystem: Boolean,
 )
-EOF
-echo done
