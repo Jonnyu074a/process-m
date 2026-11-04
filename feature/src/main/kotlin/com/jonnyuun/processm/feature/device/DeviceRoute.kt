@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -27,7 +28,8 @@ import android.os.Process
 import android.provider.Settings
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.jonnyuun.processm.core.designsystem.component.MetricCard
+import com.jonnyuun.processm.core.common.formatBytes
+import com.jonnyuun.processm.core.common.formatPercent
 import com.jonnyuun.processm.core.model.Metric
 import com.jonnyuun.processm.domain.MetricsRepository
 import com.jonnyuun.processm.feature.overview.CpuCard
@@ -38,6 +40,7 @@ import com.jonnyuun.processm.feature.overview.OverviewViewModel
 import com.jonnyuun.processm.feature.overview.StorageCard
 import com.jonnyuun.processm.feature.R
 import top.yukonga.miuix.kmp.basic.Card
+import top.yukonga.miuix.kmp.basic.LinearProgressIndicator
 import top.yukonga.miuix.kmp.basic.Text
 import top.yukonga.miuix.kmp.theme.MiuixTheme
 import androidx.compose.ui.res.stringResource
@@ -134,9 +137,83 @@ fun DeviceScreen(state: OverviewUiState, modifier: Modifier = Modifier) {
             )
         }
 
-        MemoryCard(state.memory, state.memoryHistory)
-        CpuCard(state.cpu, state.cpuHistory)
-        StorageCard(state.storage)
+        ResourcesCard(state)
+    }
+}
+
+@Composable
+private fun ResourcesCard(state: OverviewUiState) {
+    val memory = state.memory?.availableValue()
+    val cpu = state.cpu?.availableValue()
+    val storage = state.storage?.availableValue()
+    val battery = state.battery?.availableValue()
+
+    Card(
+        modifier = Modifier.fillMaxWidth(),
+        insideMargin = PaddingValues(horizontal = 16.dp, vertical = 14.dp),
+    ) {
+        Text(
+            text = stringResource(R.string.device_resources_title),
+            fontSize = 13.sp,
+            color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
+        )
+        Spacer(Modifier.height(8.dp))
+
+        if (memory != null) {
+            ResourceRow(
+                label = stringResource(R.string.memory_title),
+                value = "${formatBytes(memory.usedBytes)} / ${formatBytes(memory.totalBytes)}",
+                progress = memory.usedFraction.toFloat(),
+            )
+            Spacer(Modifier.height(10.dp))
+        }
+        if (cpu != null) {
+            ResourceRow(
+                label = stringResource(R.string.cpu_title),
+                value = formatPercent(cpu.usagePercent),
+                progress = (cpu.usagePercent / 100.0).toFloat(),
+            )
+            Spacer(Modifier.height(10.dp))
+        }
+        if (storage != null) {
+            ResourceRow(
+                label = stringResource(R.string.storage_title),
+                value = "${formatBytes(storage.usedBytes)} / ${formatBytes(storage.totalBytes)}",
+                progress = storage.usedFraction.toFloat(),
+            )
+            Spacer(Modifier.height(10.dp))
+        }
+        if (battery != null) {
+            ResourceRow(
+                label = stringResource(R.string.device_battery),
+                value = "${battery.levelPercent}%${if (battery.isCharging) " · cargando" else ""}",
+                progress = battery.levelPercent / 100f,
+            )
+        }
+    }
+}
+
+@Composable
+private fun ResourceRow(label: String, value: String, progress: Float) {
+    Column {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(
+                text = label,
+                modifier = Modifier.weight(1f),
+                fontSize = 13.sp,
+                color = MiuixTheme.colorScheme.onSurface,
+            )
+            Text(
+                text = value,
+                fontSize = 12.sp,
+                color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
+            )
+        }
+        LinearProgressIndicator(
+            progress = progress.coerceIn(0f, 1f),
+            modifier = Modifier.padding(top = 6.dp),
+            height = 6.dp,
+        )
     }
 }
 

@@ -3,6 +3,7 @@ package com.jonnyuun.processm.feature.overview
 import android.content.Context
 import android.os.BatteryManager
 import android.os.Build
+import android.os.Build
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -116,7 +117,16 @@ private fun OverviewContent(state: OverviewUiState, modifier: Modifier = Modifie
             .padding(horizontal = 24.dp, vertical = 12.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
-        DeviceOverviewCard(state)
+        val battery = state.battery?.availableValue()
+
+        Text(
+            text = buildString {
+                append("${Build.MANUFACTURER} ${Build.MODEL}".trim())
+                if (battery != null) append(" · Batería ${battery.levelPercent}%")
+            },
+            fontSize = 13.sp,
+            color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
+        )
 
         Text(
             text = stringResource(R.string.overview_section),

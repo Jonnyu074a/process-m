@@ -18,6 +18,7 @@
     <string name="device_battery_unavailable">Batería: no disponible</string>
     <string name="device_ram_total">RAM total</string>
     <string name="device_storage_total">Almacenamiento total</string>
+    <string name="device_resources_title">Recursos</string>
     <string name="device_access_title">Acceso</string>
     <string name="device_access_level">Nivel de acceso: Estándar</string>
     <string name="device_access_note">Shizuku y root se añadirán en fases posteriores.</string>
