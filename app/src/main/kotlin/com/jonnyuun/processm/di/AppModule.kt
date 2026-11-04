@@ -4,6 +4,7 @@ import android.content.Context
 import com.jonnyuun.processm.core.system.AndroidBatterySource
 import com.jonnyuun.processm.core.system.AndroidMemorySource
 import com.jonnyuun.processm.core.system.AndroidProcessSource
+import com.jonnyuun.processm.core.system.ProcessSource
 import com.jonnyuun.processm.core.system.AndroidStorageSource
 import com.jonnyuun.processm.core.system.BatterySource
 import com.jonnyuun.processm.core.system.CpuSource
