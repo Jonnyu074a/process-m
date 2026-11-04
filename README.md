@@ -20,8 +20,9 @@ con iconos. El plan está validado y la Fase 1 (Overview + Device) es lo siguien
 - Package: `com.jonnyuun.processm`
 - Distribución: sideload (uso personal, fuera de Google Play)
 - Root: incluido en v1, siempre opt-in y con lista blanca.
-- APK de prueba: [v0.1.2-spike2](https://github.com/Jonnyu074a/process-m/releases/tag/v0.1.2-spike2)
-  (versiones anteriores: [v0.1.1-spike1](https://github.com/Jonnyu074a/process-m/releases/tag/v0.1.1-spike1),
+- APK de prueba: [v0.1.3-spike3](https://github.com/Jonnyu074a/process-m/releases/tag/v0.1.3-spike3)
+  (anteriores: [v0.1.2-spike2](https://github.com/Jonnyu074a/process-m/releases/tag/v0.1.2-spike2),
+  [v0.1.1-spike1](https://github.com/Jonnyu074a/process-m/releases/tag/v0.1.1-spike1),
   [v0.1.0-spike0](https://github.com/Jonnyu074a/process-m/releases/tag/v0.1.0-spike0))
 
 ## Documentación
