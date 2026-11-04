@@ -61,5 +61,3 @@ class AndroidAppsSource(
         }
     }
 }
-EOF
-echo done

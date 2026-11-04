@@ -20,5 +20,3 @@ class AppsRepositoryImpl(
             source.appDetail(packageName)
         }
 }
-EOF
-echo done
