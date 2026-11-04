@@ -9,5 +9,3 @@ interface SettingsRepository {
 
     suspend fun setSamplingIntervalMs(value: Long)
 }
-EOF
-echo done
