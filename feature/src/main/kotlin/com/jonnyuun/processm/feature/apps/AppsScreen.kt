@@ -21,6 +21,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.Image
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -41,8 +42,6 @@ import com.jonnyuun.processm.domain.AppsRepository
 import com.jonnyuun.processm.domain.ProcessRepository
 import com.jonnyuun.processm.feature.R
 import top.yukonga.miuix.kmp.basic.Card
-import top.yukonga.miuix.kmp.basic.NavigationBar
-import top.yukonga.miuix.kmp.basic.NavigationBarItem
 import top.yukonga.miuix.kmp.basic.Scaffold
 import top.yukonga.miuix.kmp.basic.SmallTopAppBar
 import top.yukonga.miuix.kmp.basic.Text
@@ -82,20 +81,9 @@ fun AppsScreen(
             )
         },
         bottomBar = {
-            NavigationBar {
-                val items = listOf(
-                    Pair(R.string.nav_installed, R.drawable.ic_nav_apps),
-                    Pair(R.string.nav_running, R.drawable.ic_nav_monitor),
-                )
-                var selectedAppTab by remember { mutableIntStateOf(0) }
-                items.forEachIndexed { index, item ->
-                    NavigationBarItem(
-                        selected = index == selectedAppTab,
-                        onClick = { selectedAppTab = index },
-                        icon = ImageVector.vectorResource(item.second),
-                        label = stringResource(item.first),
-                    )
-                }
+            top.yukonga.miuix.kmp.basic.NavigationBar {
+                // Empty bottom bar: reserves navigation-bar inset so content does not overlap
+                // the system gesture area. Main bottom tabs are owned by OverviewScreen.
             }
         },
     ) { padding ->
@@ -106,8 +94,6 @@ fun AppsScreen(
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(12.dp),
         ) {
-            var selectedAppTab by remember { mutableIntStateOf(0) }
-
             Text(
                 text = stringResource(R.string.apps_section),
                 fontSize = 13.sp,
@@ -145,19 +131,17 @@ fun AppsScreen(
                 }
             }
 
-            if (selectedAppTab == 0) {
-                InstalledAppsSection(
-                    state = state,
-                    onQueryChanged = onQueryChanged,
-                    pm = pm,
-                )
-            } else {
-                RunningAppsSection(
-                    state = state,
-                    onQueryChanged = onRunningQueryChanged,
-                    pm = pm,
-                )
-            }
+            InstalledAppsSection(
+                state = state,
+                onQueryChanged = onQueryChanged,
+                pm = pm,
+            )
+
+            RunningAppsSection(
+                state = state,
+                onQueryChanged = onRunningQueryChanged,
+                pm = pm,
+            )
         }
     }
 }
@@ -226,7 +210,7 @@ private fun InstalledAppRow(app: AppSummary, index: Int) {
                 modifier = Modifier.size(32.dp).background(MiuixTheme.colorScheme.surfaceVariant, shape = RoundedCornerShape(8.dp)),
                 contentAlignment = Alignment.Center,
             ) {
-                androidx.compose.foundation.Image(
+                Image(
                     imageVector = ImageVector.vectorResource(iconRes),
                     contentDescription = null,
                     modifier = Modifier.size(24.dp),
@@ -321,7 +305,7 @@ private fun RunningAppRow(proc: ProcessSnapshot, index: Int) {
                 modifier = Modifier.size(32.dp).background(MiuixTheme.colorScheme.surfaceVariant, shape = RoundedCornerShape(8.dp)),
                 contentAlignment = Alignment.Center,
             ) {
-                androidx.compose.foundation.Image(
+                Image(
                     imageVector = ImageVector.vectorResource(iconRes),
                     contentDescription = null,
                     modifier = Modifier.size(24.dp),
