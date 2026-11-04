@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.weight
 import androidx.compose.foundation.layout.verticalScroll
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -113,7 +112,7 @@ fun AppsScreen(
         }
 
         LazyColumn(
-            modifier = Modifier.weight(1f),
+            modifier = Modifier.fillMaxWidth(),
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             itemsIndexed(apps) { index, app ->
@@ -177,5 +176,3 @@ private fun hasUsageStatsPermission(context: Context): Boolean {
     )
     return mode == AppOpsManager.MODE_ALLOWED
 }
-EOF
-echo done
