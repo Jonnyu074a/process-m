@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.BatteryManager
 import android.os.Build
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
