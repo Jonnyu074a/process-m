@@ -21,6 +21,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.foundation.layout.verticalScroll
 import androidx.compose.ui.graphics.shape.RoundedCornerShape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
@@ -39,6 +40,7 @@ import top.yukonga.miuix.kmp.basic.Scaffold
 import top.yukonga.miuix.kmp.basic.SmallTopAppBar
 import top.yukonga.miuix.kmp.basic.Text
 import top.yukonga.miuix.kmp.basic.TextButton
+import androidx.compose.material3.TextButton as Material3TextButton
 import top.yukonga.miuix.kmp.theme.MiuixTheme
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.ui.res.stringResource
@@ -89,7 +91,7 @@ fun AppsScreen(
         if (!hasUsageStats) {
             Card(
                 modifier = Modifier.fillMaxWidth(),
-                insidePadding = PaddingValues(horizontal = 16.dp, vertical = 12.dp),
+                insideMargin = PaddingValues(horizontal = 16.dp, vertical = 12.dp),
             ) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     Text(
@@ -140,7 +142,7 @@ fun AppsScreen(
 private fun AppRow(app: AppSummary) {
     Card(
         modifier = Modifier.fillMaxWidth(),
-        insidePadding = PaddingValues(horizontal = 16.dp, vertical = 12.dp),
+        insideMargin = PaddingValues(horizontal = 16.dp, vertical = 12.dp),
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,

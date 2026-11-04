@@ -65,5 +65,3 @@ class AppsViewModel(
         }
     }
 }
-EOF
-echo done
