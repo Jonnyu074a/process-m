@@ -13,13 +13,14 @@ como “No disponible”, nunca como un dato inventado.
 
 ## Estado
 
-**Fase 0 completada — Spike 0 en curso.** El plan está validado y el proyecto
-arranca con un APK mínimo compilado en GitHub Actions (tema MIUIX y métricas
-reales de RAM/CPU/almacenamiento). Después, Fase 1 (Overview + Device).
+**Spike 0 compilado — pendiente de probar en el teléfono.** GitHub Actions genera
+un APK con tema MIUIX y métricas reales de RAM/CPU/almacenamiento. El plan está
+validado y la Fase 1 (Overview + Device) es lo siguiente.
 
 - Package: `com.jonnyuun.processm`
 - Distribución: sideload (uso personal, fuera de Google Play)
 - Root: incluido en v1, siempre opt-in y con lista blanca.
+- APK de prueba: [v0.1.0-spike0](https://github.com/Jonnyu074a/process-m/releases/tag/v0.1.0-spike0)
 
 ## Documentación
 
@@ -33,17 +34,23 @@ reales de RAM/CPU/almacenamiento). Después, Fase 1 (Overview + Device).
 ## Stack
 
 - Kotlin 2.4.21 · Jetpack Compose (BOM 2026.06.01) · MIUIX 0.9.3
-- AGP 8.13.2 · Gradle 8.14.6 · JDK 17 · compileSdk/targetSdk 36 · minSdk 26
+- AGP 9.3.1 · Gradle 9.5.0 · JDK 17 · compileSdk 37 (minor 0) · targetSdk 36 · minSdk 26
 - Koin 4.2.2 · Coroutines/Flow · DataStore · Shizuku 13.1.5
 - Arquitectura por capas: `app`, `core:model`, `core:common`, `core:designsystem`,
   `core:system`, `domain`, `data`, `feature`
 
+> MIUIX 0.9.x exige `compileSdk 37`, y API 37 requiere AGP 9.1+. Para conservar
+> Kotlin 2.4.21 (MIUIX depende de kotlin-stdlib 2.4) se desactiva el Kotlin
+> integrado de AGP 9 (`android.builtInKotlin=false`) y el nuevo DSL.
+
 ## Compilar
 
 El build oficial vive en GitHub Actions (`.github/workflows/android.yml`): JDK 17,
-SDK 36 y Gradle 8.14.6. El APK debug se publica como artefacto `process-m-debug`.
+SDK 37 (`platforms;android-37.0`), build-tools 36.0.0 y Gradle 9.5.0. El APK debug
+se publica como artefacto `process-m-debug` y como Release.
 
 ## Próximo paso
 
-Completar el Spike 0: verificar que el APK compila en CI, instalarlo en el
-teléfono y medir build, tamaño y rendimiento. Después, Fase 1 (Overview + Device).
+Instalar `v0.1.0-spike0` en el teléfono y medir arranque, memoria y fluidez para
+cerrar la decisión sobre MIUIX. Después, Fase 1 (Overview + Device con batería y
+estados de permiso, Koin).

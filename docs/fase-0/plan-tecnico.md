@@ -19,8 +19,8 @@
 | Lenguaje | Kotlin 2.4.21 | Requerido por MIUIX 0.9.3 (compilado con Kotlin 2.4) y Compose moderno. |
 | UI | Jetpack Compose + MIUIX 0.9.3 | MIUIX es Apache-2.0, tiene artefacto Android (`miuix-ui-android`) y minSdk 23. |
 | minSdk | **26** (Android 8.0) | `StorageStatsManager` (tamaño por app), cobertura amplia, base común razonable. |
-| compileSdk / targetSdk | **36 / 36** | Android 16; requisito de Play desde ago-2026; el dispositivo de prueba es API 35. |
-| Build | AGP 8.13.2 + Gradle 8.14.6 + JDK 17 | Combinación estable y documentada; evita la migración a AGP 9 en el MVP. |
+| compileSdk / targetSdk | **37 (minor 0) / 36** | MIUIX 0.9.x exige `minCompileSdk=37`; targetSdk 36 mantiene el comportamiento de Android 16. El dispositivo de prueba es API 35. |
+| Build | AGP 9.3.1 + Gradle 9.5.0 + JDK 17 | AGP 9.1+ es obligatorio para API 37. Kotlin 2.4.21 se mantiene desactivando el Kotlin integrado de AGP 9. |
 | CI | **GitHub Actions** (APK debug como artefacto) | No hay SDK local en el teléfono; el build vive en CI. |
 | DI | **Koin 4.2.2** | Sin KSP/annotation processing: builds más rápidos y menos piezas frágiles. |
 | Persistencia | DataStore (prefs) ahora; Room solo si hace falta | El historial de sesiones vive en memoria; exportación a CSV/JSON. |
@@ -46,12 +46,12 @@ oficial, no de memoria.
 
 | Componente | Versión | Verificación |
 |---|---|---|
-| JDK | 17 (Temurin/OpenJDK del sistema) | AGP 8.13 exige JDK 17 como mínimo. `openjdk-17-jdk-headless` está disponible en apt (17.0.20.1). |
-| Gradle | 8.14.6 | Última 8.x; AGP 8.13 exige ≥ 8.13. |
-| AGP | 8.13.2 | Última 8.x; soporta hasta API 36.1, build-tools 36, JDK 17. |
-| Kotlin (KGP) | 2.4.21 | KGP 2.4.20–2.4.21 soporta Gradle 7.6.3–9.7.0 y AGP 8.5.2–9.3.1. |
-| Compose BOM | 2026.06.01 (Compose 1.11.4) | `ui-android:1.11.4` exige `minCompileSdk=35`, AGP ≥ 8.6. |
-| Build tools | 36.0.0 | Requerido por AGP 8.13/9.x. |
+| JDK | 17 (Temurin/OpenJDK del sistema) | AGP 9.3 exige JDK 17 como mínimo. `openjdk-17-jdk-headless` está disponible en apt. |
+| Gradle | 9.5.0 | Mínimo de AGP 9.3; KGP 2.4.21 soporta hasta 9.7.0. |
+| AGP | 9.3.1 | Necesario para `compileSdk 37`/API 37; soportado por KGP 2.4.21 (máx. 9.3.1). |
+| Kotlin (KGP) | 2.4.21 | KGP 2.4.20–2.4.21 soporta Gradle 7.6.3–9.7.0 y AGP 8.5.2–9.3.1. AGP 9 trae Kotlin integrado; se desactiva (`android.builtInKotlin=false`) para conservar KGP 2.4 y consumir MIUIX (kotlin-stdlib 2.4.0). |
+| Compose BOM | 2026.06.01 (Compose 1.11.4) | `ui-android:1.11.4` exige `minCompileSdk=35`; compatible con compileSdk 37. |
+| Build tools | 36.0.0 | Requerido por AGP 9.x; el platform es `platforms;android-37.0`. |
 
 ### 2.2 Librerías
 
@@ -356,9 +356,9 @@ Hechos del entorno local (comprobados):
 ### Workflow `android.yml`
 
 - Runner `ubuntu-latest`, JDK 17 (Temurin).
-- `android-actions/setup-android` + `sdkmanager` con `platforms;android-36` y
-  `build-tools;36.0.0`.
-- Gradle 8.14.6 vía `gradle/actions/setup-gradle` (sin wrapper en el repo por ahora).
+- `android-actions/setup-android` (sin el paquete `tools`, retirado) + `sdkmanager`
+  con `platforms;android-37.0` y `build-tools;36.0.0`.
+- Gradle 9.5.0 vía `gradle/actions/setup-gradle` (sin wrapper en el repo por ahora).
 - Tarea: `gradle :app:assembleDebug`.
 - Artefacto: `process-m-debug` con `app/build/outputs/apk/debug/*.apk`.
 - Disparadores: push a `main` y `workflow_dispatch`.
@@ -406,21 +406,35 @@ algo funciona sin haberlo comprobado.
 
 Objetivo: eliminar las incógnitas que pueden invalidar el plan.
 
-1. Configurar GitHub Actions con JDK 17, SDK 36 y Gradle 8.14.6.
+1. Configurar GitHub Actions con JDK 17, SDK 37 y Gradle 9.5.0.
 2. Proyecto mínimo multi-módulo: `:app` + `:core:*` + `:domain` + `:data` + `:feature`,
    tema MIUIX, una pantalla y barra inferior.
 3. Leer RAM (`ActivityManager`), CPU total (`/proc/stat`) y almacenamiento (`StatFs`).
-4. Compilar APK debug en CI, descargar el artefacto, instalarlo y comprobarlo.
-5. Medir: tiempo de build, tamaño del APK, arranque, memoria de la app, fluidez.
+4. Compilar APK debug en CI y publicarlo como artefacto y Release.
+5. Instalar y comprobar en el teléfono; medir arranque, memoria de la app y fluidez.
 6. Decidir: ¿MIUIX 0.9.3 es estable y rinde bien en HyperOS? Si no, plan B:
    Material 3 con tokens visuales propios (la arquitectura no cambia).
+
+#### Resultado del spike (2026-11-04)
+
+- Build en GitHub Actions: **correcto** en 1m20s (run `41888983118`).
+- APK debug: **10.2 MB**, `applicationId=com.jonnyuun.processm`,
+  `minSdk=26`, `targetSdk=36`, `compileSdk=37`.
+- Artefacto: `process-m-debug`.
+  Release: https://github.com/Jonnyu074a/process-m/releases/tag/v0.1.0-spike0
+- Incidencias resueltas: MIUIX 0.9.x exige `compileSdk 37` (no 36), API 37 solo
+  está en `platforms;android-37.0`, y AGP 9 necesita desactivar Kotlin integrado
+  para usar KGP 2.4.21.
+- Pendiente: instalar en el teléfono y anotar arranque/memoria/fluidez; con eso
+  se cierra la decisión sobre MIUIX.
 
 ---
 
 ## 9. Riesgos principales (detalle en `riesgos.md`)
 
 1. MIUIX es experimental (0.9.x): APIs pueden cambiar; se aísla en `core:designsystem`.
-2. Acoplamiento MIUIX ↔ Compose 1.11: se fija BOM y se valida en el spike.
+2. Acoplamiento MIUIX ↔ Compose 1.11 y compileSdk 37: se fija BOM y se valida en el spike;
+   cualquier subida de MIUIX exige revisar AGP/Gradle/Kotlin.
 3. `/proc` con hidepid: procesos y CPU por proceso solo con Shizuku/root.
 4. HyperOS mata procesos en segundo plano: no se promete monitorización persistente.
 5. Shizuku se detiene al reiniciar y en MIUI requiere "USB debugging (Security options)".
