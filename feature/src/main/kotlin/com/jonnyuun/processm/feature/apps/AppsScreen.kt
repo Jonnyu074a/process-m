@@ -4,6 +4,8 @@ import android.app.AppOpsManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.Canvas
 import android.os.Process
 import android.provider.Settings
 import androidx.compose.foundation.layout.Arrangement
@@ -21,13 +23,19 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.lazy.LazyVerticalGrid
+import androidx.compose.foundation.lazy.GridCells
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.Image
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Bitmap
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -41,8 +49,6 @@ import com.jonnyuun.processm.domain.AppsRepository
 import com.jonnyuun.processm.domain.ProcessRepository
 import com.jonnyuun.processm.feature.R
 import top.yukonga.miuix.kmp.basic.Card
-import top.yukonga.miuix.kmp.basic.NavigationBar
-import top.yukonga.miuix.kmp.basic.NavigationBarItem
 import top.yukonga.miuix.kmp.basic.Scaffold
 import top.yukonga.miuix.kmp.basic.SmallTopAppBar
 import top.yukonga.miuix.kmp.basic.Text
@@ -51,8 +57,6 @@ import top.yukonga.miuix.kmp.theme.MiuixTheme
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
-
-private class QueryHolder(var value: String)
 
 @Composable
 fun AppsRoute(appsRepository: AppsRepository, processRepository: ProcessRepository) {
@@ -84,8 +88,8 @@ fun AppsScreen(
             )
         },
         bottomBar = {
-            NavigationBar {
-                NavigationBarItem(
+            top.yukonga.miuix.kmp.basic.NavigationBar {
+                top.yukonga.miuix.kmp.basic.NavigationBarItem(
                     selected = true,
                     onClick = {},
                     icon = ImageVector.vectorResource(R.drawable.ic_nav_apps),
@@ -166,7 +170,7 @@ private fun InstalledAppsSection(
         color = MiuixTheme.colorScheme.onSurface,
     )
 
-    val queryHolder = remember { QueryHolder(state.query) }
+    val queryHolder = remember { var value by mutableStateOf(state.query); value }
     BasicTextField(
         value = queryHolder.value,
         onValueChange = {
@@ -186,63 +190,72 @@ private fun InstalledAppsSection(
         )
     }
 
-    Column(
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(2),
         modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        contentPadding = PaddingValues(horizontal = 4.dp),
     ) {
-        apps.forEachIndexed { index, app ->
-            InstalledAppRow(app = app, index = index)
+        items(apps) { app ->
+            InstalledAppCard(app = app, pm = pm)
         }
     }
 }
 
 @Composable
-private fun InstalledAppRow(app: AppSummary, index: Int) {
-    val iconRes = when (index % 5) {
-        0 -> R.drawable.ic_nav_apps
-        1 -> R.drawable.ic_nav_overview
-        2 -> R.drawable.ic_nav_processes
-        3 -> R.drawable.ic_nav_monitor
-        else -> R.drawable.ic_nav_settings
+private fun InstalledAppCard(app: AppSummary, pm: PackageManager) {
+    val painter = remember(app.packageName) {
+        val drawable = pm.getApplicationIcon(app.packageName)
+        val w = drawable.intrinsicWidth.coerceAtLeast(48)
+        val h = drawable.intrinsicHeight.coerceAtLeast(48)
+        val bitmap = Bitmap.createBitmap(w, h, android.graphics.Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
+        drawable.setBounds(0, 0, w, h)
+        drawable.draw(canvas)
+        ImageBitmap.imageBitmap(bitmap)
     }
 
     Card(
         modifier = Modifier.fillMaxWidth(),
-        insideMargin = PaddingValues(horizontal = 16.dp, vertical = 12.dp),
+        insideMargin = PaddingValues(horizontal = 8.dp, vertical = 8.dp),
     ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(6.dp),
         ) {
             androidx.compose.foundation.layout.Box(
-                modifier = Modifier.size(32.dp).background(MiuixTheme.colorScheme.surfaceVariant, shape = RoundedCornerShape(8.dp)),
+                modifier = Modifier.size(48.dp).background(MiuixTheme.colorScheme.surfaceVariant, shape = RoundedCornerShape(12.dp)),
                 contentAlignment = Alignment.Center,
             ) {
                 Image(
-                    imageVector = ImageVector.vectorResource(iconRes),
+                    painter = BitmapPainter(painter),
                     contentDescription = null,
-                    modifier = Modifier.size(24.dp),
-                )
-            }
-            Spacer(modifier = Modifier.width(12.dp))
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = app.label,
-                    fontSize = 15.sp,
-                    fontWeight = androidx.compose.ui.text.font.FontWeight.SemiBold,
-                    color = MiuixTheme.colorScheme.onSurface,
-                    maxLines = 1,
-                )
-                Text(
-                    text = app.packageName,
-                    fontSize = 12.sp,
-                    color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
-                    maxLines = 1,
+                    modifier = Modifier.size(36.dp),
                 )
             }
             Text(
-                text = if (app.isSystem) stringResource(R.string.apps_system) else stringResource(R.string.apps_user),
+                text = app.label,
+                fontSize = 13.sp,
+                fontWeight = androidx.compose.ui.text.font.FontWeight.SemiBold,
+                color = MiuixTheme.colorScheme.onSurface,
+                maxLines = 2,
+                textAlign = TextAlign.Center,
+            )
+            Text(
+                text = app.packageName,
                 fontSize = 11.sp,
                 color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
+                maxLines = 1,
+                textAlign = TextAlign.Center,
+            )
+            Text(
+                text = if (app.isSystem) stringResource(R.string.apps_system) else stringResource(R.string.apps_user),
+                fontSize = 10.sp,
+                color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
+                maxLines = 1,
+                textAlign = TextAlign.Center,
             )
         }
     }
@@ -261,7 +274,7 @@ private fun RunningAppsSection(
         color = MiuixTheme.colorScheme.onSurface,
     )
 
-    val queryHolder = remember { QueryHolder(state.runningQuery) }
+    val queryHolder = remember { var value by mutableStateOf(state.runningQuery); value }
     BasicTextField(
         value = queryHolder.value,
         onValueChange = {
@@ -281,60 +294,81 @@ private fun RunningAppsSection(
         )
     }
 
-    Column(
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(2),
         modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        contentPadding = PaddingValues(horizontal = 4.dp),
     ) {
-        running.forEachIndexed { index, proc ->
-            RunningAppRow(proc = proc, index = index)
+        items(running) { proc ->
+            RunningAppCard(proc = proc, pm = pm)
         }
     }
 }
 
 @Composable
-private fun RunningAppRow(proc: ProcessSnapshot, index: Int) {
-    val iconRes = when (index % 5) {
-        0 -> R.drawable.ic_nav_apps
-        1 -> R.drawable.ic_nav_overview
-        2 -> R.drawable.ic_nav_processes
-        3 -> R.drawable.ic_nav_monitor
-        else -> R.drawable.ic_nav_settings
+private fun RunningAppCard(proc: ProcessSnapshot, pm: PackageManager) {
+    val painter = remember(proc.packageName) {
+        val drawable: android.graphics.drawable.Drawable? = try {
+            pm.getApplicationIcon(proc.packageName ?: proc.processName)
+        } catch (_: Exception) {
+            null
+        }
+        if (drawable == null) {
+            val w = 48
+            val h = 48
+            val bitmap = Bitmap.createBitmap(w, h, android.graphics.Bitmap.Config.ARGB_8888)
+            ImageBitmap.imageBitmap(bitmap)
+        } else {
+            val w = drawable.intrinsicWidth.coerceAtLeast(48)
+            val h = drawable.intrinsicHeight.coerceAtLeast(48)
+            val bitmap = Bitmap.createBitmap(w, h, android.graphics.Bitmap.Config.ARGB_8888)
+            val canvas = Canvas(bitmap)
+            drawable.setBounds(0, 0, w, h)
+            drawable.draw(canvas)
+            ImageBitmap.imageBitmap(bitmap)
+        }
     }
 
     Card(
         modifier = Modifier.fillMaxWidth(),
-        insideMargin = PaddingValues(horizontal = 16.dp, vertical = 12.dp),
+        insideMargin = PaddingValues(horizontal = 8.dp, vertical = 8.dp),
     ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(6.dp),
         ) {
             androidx.compose.foundation.layout.Box(
-                modifier = Modifier.size(32.dp).background(MiuixTheme.colorScheme.surfaceVariant, shape = RoundedCornerShape(8.dp)),
+                modifier = Modifier.size(48.dp).background(MiuixTheme.colorScheme.surfaceVariant, shape = RoundedCornerShape(12.dp)),
                 contentAlignment = Alignment.Center,
             ) {
                 Image(
-                    imageVector = ImageVector.vectorResource(iconRes),
+                    painter = BitmapPainter(painter),
                     contentDescription = null,
-                    modifier = Modifier.size(24.dp),
+                    modifier = Modifier.size(36.dp),
                 )
             }
-            Spacer(modifier = Modifier.width(12.dp))
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = proc.packageName ?: proc.processName,
-                    fontSize = 15.sp,
-                    fontWeight = androidx.compose.ui.text.font.FontWeight.SemiBold,
-                    color = MiuixTheme.colorScheme.onSurface,
-                    maxLines = 1,
-                )
-                Text(
-                    text = proc.processName,
-                    fontSize = 12.sp,
-                    color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
-                    maxLines = 1,
-                )
-            }
-            Column {
+            Text(
+                text = proc.packageName ?: proc.processName,
+                fontSize = 13.sp,
+                fontWeight = androidx.compose.ui.text.font.FontWeight.SemiBold,
+                color = MiuixTheme.colorScheme.onSurface,
+                maxLines = 2,
+                textAlign = TextAlign.Center,
+            )
+            Text(
+                text = proc.processName,
+                fontSize = 11.sp,
+                color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
+                maxLines = 1,
+                textAlign = TextAlign.Center,
+            )
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(2.dp),
+            ) {
                 Text(
                     text = formatBytes(proc.ramBytes),
                     fontSize = 13.sp,
@@ -360,3 +394,4 @@ private fun hasUsageStatsPermission(context: Context): Boolean {
     )
     return mode == AppOpsManager.MODE_ALLOWED
 }
+EOF
