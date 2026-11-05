@@ -23,9 +23,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.lazy.GridCells
-import androidx.compose.foundation.lazy.LazyVerticalGrid
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.Image
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -48,8 +45,6 @@ import com.jonnyuun.processm.domain.AppsRepository
 import com.jonnyuun.processm.domain.ProcessRepository
 import com.jonnyuun.processm.feature.R
 import top.yukonga.miuix.kmp.basic.Card
-import top.yukonga.miuix.kmp.basic.NavigationBar
-import top.yukonga.miuix.kmp.basic.NavigationBarItem
 import top.yukonga.miuix.kmp.basic.Scaffold
 import top.yukonga.miuix.kmp.basic.SmallTopAppBar
 import top.yukonga.miuix.kmp.basic.Text
@@ -89,8 +84,8 @@ fun AppsScreen(
             )
         },
         bottomBar = {
-            NavigationBar {
-                NavigationBarItem(
+            top.yukonga.miuix.kmp.basic.NavigationBar {
+                top.yukonga.miuix.kmp.basic.NavigationBarItem(
                     selected = true,
                     onClick = {},
                     icon = ImageVector.vectorResource(R.drawable.ic_nav_apps),
@@ -191,15 +186,24 @@ private fun InstalledAppsSection(
         )
     }
 
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(2),
+    Column(
         modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(8.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        contentPadding = PaddingValues(horizontal = 4.dp),
     ) {
-        items(apps) { app ->
-            InstalledAppCard(app = app, pm = pm)
+        val pairs = apps.chunked(2)
+        pairs.forEach { pair ->
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                pair.forEach { app ->
+                    Column(
+                        modifier = Modifier.weight(1f).fillMaxWidth(),
+                    ) {
+                        InstalledAppCard(app = app, pm = pm)
+                    }
+                }
+            }
         }
     }
 }
@@ -238,7 +242,7 @@ private fun InstalledAppCard(app: AppSummary, pm: PackageManager) {
             }
             Text(
                 text = app.label,
-                fontSize = 13.sp,
+                fontSize = 12.sp,
                 fontWeight = androidx.compose.ui.text.font.FontWeight.SemiBold,
                 color = MiuixTheme.colorScheme.onSurface,
                 maxLines = 2,
@@ -246,13 +250,6 @@ private fun InstalledAppCard(app: AppSummary, pm: PackageManager) {
             )
             Text(
                 text = app.packageName,
-                fontSize = 11.sp,
-                color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
-                maxLines = 1,
-                textAlign = TextAlign.Center,
-            )
-            Text(
-                text = if (app.isSystem) stringResource(R.string.apps_system) else stringResource(R.string.apps_user),
                 fontSize = 10.sp,
                 color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                 maxLines = 1,
@@ -295,15 +292,24 @@ private fun RunningAppsSection(
         )
     }
 
-    LazyVerticalGrid(
-        columns = GridCells.Fixed(2),
+    Column(
         modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(8.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        contentPadding = PaddingValues(horizontal = 4.dp),
     ) {
-        items(running) { proc ->
-            RunningAppCard(proc = proc, pm = pm)
+        val pairs = running.chunked(2)
+        pairs.forEach { pair ->
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                pair.forEach { proc ->
+                    Column(
+                        modifier = Modifier.weight(1f).fillMaxWidth(),
+                    ) {
+                        RunningAppCard(proc = proc, pm = pm)
+                    }
+                }
+            }
         }
     }
 }
@@ -353,7 +359,7 @@ private fun RunningAppCard(proc: ProcessSnapshot, pm: PackageManager) {
             }
             Text(
                 text = proc.packageName ?: proc.processName,
-                fontSize = 13.sp,
+                fontSize = 12.sp,
                 fontWeight = androidx.compose.ui.text.font.FontWeight.SemiBold,
                 color = MiuixTheme.colorScheme.onSurface,
                 maxLines = 2,
@@ -361,7 +367,7 @@ private fun RunningAppCard(proc: ProcessSnapshot, pm: PackageManager) {
             )
             Text(
                 text = proc.processName,
-                fontSize = 11.sp,
+                fontSize = 10.sp,
                 color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                 maxLines = 1,
                 textAlign = TextAlign.Center,
@@ -372,13 +378,13 @@ private fun RunningAppCard(proc: ProcessSnapshot, pm: PackageManager) {
             ) {
                 Text(
                     text = formatBytes(proc.ramBytes),
-                    fontSize = 13.sp,
+                    fontSize = 12.sp,
                     fontWeight = androidx.compose.ui.text.font.FontWeight.Medium,
                     color = MiuixTheme.colorScheme.primary,
                 )
                 Text(
                     text = "PID ${proc.pid}",
-                    fontSize = 11.sp,
+                    fontSize = 10.sp,
                     color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                 )
             }
