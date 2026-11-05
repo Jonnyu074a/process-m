@@ -31,6 +31,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.imageBitmap
 import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
@@ -218,7 +219,7 @@ private fun InstalledAppCard(app: AppSummary, pm: PackageManager) {
         val canvas = Canvas(bitmap)
         drawable.setBounds(0, 0, w, h)
         drawable.draw(canvas)
-        ImageBitmap.imageBitmap(bitmap)
+        imageBitmap(bitmap)
     }
 
     Card(
@@ -326,7 +327,7 @@ private fun RunningAppCard(proc: ProcessSnapshot, pm: PackageManager) {
             val w = 48
             val h = 48
             val bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
-            ImageBitmap.imageBitmap(bitmap)
+            imageBitmap(bitmap)
         } else {
             val w = drawable.intrinsicWidth.coerceAtLeast(48)
             val h = drawable.intrinsicHeight.coerceAtLeast(48)
@@ -334,7 +335,7 @@ private fun RunningAppCard(proc: ProcessSnapshot, pm: PackageManager) {
             val canvas = Canvas(bitmap)
             drawable.setBounds(0, 0, w, h)
             drawable.draw(canvas)
-            ImageBitmap.imageBitmap(bitmap)
+            imageBitmap(bitmap)
         }
     }
 
