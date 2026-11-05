@@ -23,8 +23,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.lazy.GridCells
+import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.Image
 import androidx.compose.runtime.Composable
@@ -33,7 +33,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Bitmap
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.platform.LocalContext
@@ -49,6 +48,8 @@ import com.jonnyuun.processm.domain.AppsRepository
 import com.jonnyuun.processm.domain.ProcessRepository
 import com.jonnyuun.processm.feature.R
 import top.yukonga.miuix.kmp.basic.Card
+import top.yukonga.miuix.kmp.basic.NavigationBar
+import top.yukonga.miuix.kmp.basic.NavigationBarItem
 import top.yukonga.miuix.kmp.basic.Scaffold
 import top.yukonga.miuix.kmp.basic.SmallTopAppBar
 import top.yukonga.miuix.kmp.basic.Text
@@ -88,8 +89,8 @@ fun AppsScreen(
             )
         },
         bottomBar = {
-            top.yukonga.miuix.kmp.basic.NavigationBar {
-                top.yukonga.miuix.kmp.basic.NavigationBarItem(
+            NavigationBar {
+                NavigationBarItem(
                     selected = true,
                     onClick = {},
                     icon = ImageVector.vectorResource(R.drawable.ic_nav_apps),
@@ -170,11 +171,11 @@ private fun InstalledAppsSection(
         color = MiuixTheme.colorScheme.onSurface,
     )
 
-    val queryHolder = remember { var value by mutableStateOf(state.query); value }
+    val queryState = remember { mutableStateOf(state.query) }
     BasicTextField(
-        value = queryHolder.value,
+        value = queryState.value,
         onValueChange = {
-            queryHolder.value = it
+            queryState.value = it
             onQueryChanged(it)
         },
         modifier = Modifier.fillMaxWidth(),
@@ -209,7 +210,7 @@ private fun InstalledAppCard(app: AppSummary, pm: PackageManager) {
         val drawable = pm.getApplicationIcon(app.packageName)
         val w = drawable.intrinsicWidth.coerceAtLeast(48)
         val h = drawable.intrinsicHeight.coerceAtLeast(48)
-        val bitmap = Bitmap.createBitmap(w, h, android.graphics.Bitmap.Config.ARGB_8888)
+        val bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bitmap)
         drawable.setBounds(0, 0, w, h)
         drawable.draw(canvas)
@@ -274,11 +275,11 @@ private fun RunningAppsSection(
         color = MiuixTheme.colorScheme.onSurface,
     )
 
-    val queryHolder = remember { var value by mutableStateOf(state.runningQuery); value }
+    val queryState = remember { mutableStateOf(state.runningQuery) }
     BasicTextField(
-        value = queryHolder.value,
+        value = queryState.value,
         onValueChange = {
-            queryHolder.value = it
+            queryState.value = it
             onQueryChanged(it)
         },
         modifier = Modifier.fillMaxWidth(),
@@ -318,12 +319,12 @@ private fun RunningAppCard(proc: ProcessSnapshot, pm: PackageManager) {
         if (drawable == null) {
             val w = 48
             val h = 48
-            val bitmap = Bitmap.createBitmap(w, h, android.graphics.Bitmap.Config.ARGB_8888)
+            val bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
             ImageBitmap.imageBitmap(bitmap)
         } else {
             val w = drawable.intrinsicWidth.coerceAtLeast(48)
             val h = drawable.intrinsicHeight.coerceAtLeast(48)
-            val bitmap = Bitmap.createBitmap(w, h, android.graphics.Bitmap.Config.ARGB_8888)
+            val bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
             val canvas = Canvas(bitmap)
             drawable.setBounds(0, 0, w, h)
             drawable.draw(canvas)
@@ -394,4 +395,3 @@ private fun hasUsageStatsPermission(context: Context): Boolean {
     )
     return mode == AppOpsManager.MODE_ALLOWED
 }
-EOF
