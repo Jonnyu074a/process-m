@@ -4,8 +4,6 @@ import android.app.AppOpsManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.Canvas
 import android.os.Process
 import android.provider.Settings
 import androidx.compose.foundation.layout.Arrangement
@@ -30,9 +28,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.imageBitmap
-import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -46,6 +41,8 @@ import com.jonnyuun.processm.domain.AppsRepository
 import com.jonnyuun.processm.domain.ProcessRepository
 import com.jonnyuun.processm.feature.R
 import top.yukonga.miuix.kmp.basic.Card
+import top.yukonga.miuix.kmp.basic.NavigationBar
+import top.yukonga.miuix.kmp.basic.NavigationBarItem
 import top.yukonga.miuix.kmp.basic.Scaffold
 import top.yukonga.miuix.kmp.basic.SmallTopAppBar
 import top.yukonga.miuix.kmp.basic.Text
@@ -85,8 +82,8 @@ fun AppsScreen(
             )
         },
         bottomBar = {
-            top.yukonga.miuix.kmp.basic.NavigationBar {
-                top.yukonga.miuix.kmp.basic.NavigationBarItem(
+            NavigationBar {
+                NavigationBarItem(
                     selected = true,
                     onClick = {},
                     icon = ImageVector.vectorResource(R.drawable.ic_nav_apps),
@@ -211,15 +208,12 @@ private fun InstalledAppsSection(
 
 @Composable
 private fun InstalledAppCard(app: AppSummary, pm: PackageManager) {
-    val painter = remember(app.packageName) {
-        val drawable = pm.getApplicationIcon(app.packageName)
-        val w = drawable.intrinsicWidth.coerceAtLeast(48)
-        val h = drawable.intrinsicHeight.coerceAtLeast(48)
-        val bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
-        val canvas = Canvas(bitmap)
-        drawable.setBounds(0, 0, w, h)
-        drawable.draw(canvas)
-        imageBitmap(bitmap)
+    val iconRes = when (app.packageName.hashCode() % 5) {
+        0 -> R.drawable.ic_nav_apps
+        1 -> R.drawable.ic_nav_overview
+        2 -> R.drawable.ic_nav_processes
+        3 -> R.drawable.ic_nav_monitor
+        else -> R.drawable.ic_nav_settings
     }
 
     Card(
@@ -236,7 +230,7 @@ private fun InstalledAppCard(app: AppSummary, pm: PackageManager) {
                 contentAlignment = Alignment.Center,
             ) {
                 Image(
-                    painter = BitmapPainter(painter),
+                    imageVector = ImageVector.vectorResource(iconRes),
                     contentDescription = null,
                     modifier = Modifier.size(36.dp),
                 )
@@ -251,6 +245,13 @@ private fun InstalledAppCard(app: AppSummary, pm: PackageManager) {
             )
             Text(
                 text = app.packageName,
+                fontSize = 10.sp,
+                color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
+                maxLines = 1,
+                textAlign = TextAlign.Center,
+            )
+            Text(
+                text = if (app.isSystem) stringResource(R.string.apps_system) else stringResource(R.string.apps_user),
                 fontSize = 10.sp,
                 color = MiuixTheme.colorScheme.onSurfaceVariantSummary,
                 maxLines = 1,
@@ -317,26 +318,12 @@ private fun RunningAppsSection(
 
 @Composable
 private fun RunningAppCard(proc: ProcessSnapshot, pm: PackageManager) {
-    val painter = remember(proc.packageName) {
-        val drawable: android.graphics.drawable.Drawable? = try {
-            pm.getApplicationIcon(proc.packageName ?: proc.processName)
-        } catch (_: Exception) {
-            null
-        }
-        if (drawable == null) {
-            val w = 48
-            val h = 48
-            val bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
-            imageBitmap(bitmap)
-        } else {
-            val w = drawable.intrinsicWidth.coerceAtLeast(48)
-            val h = drawable.intrinsicHeight.coerceAtLeast(48)
-            val bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
-            val canvas = Canvas(bitmap)
-            drawable.setBounds(0, 0, w, h)
-            drawable.draw(canvas)
-            imageBitmap(bitmap)
-        }
+    val iconRes = when ((proc.packageName ?: proc.processName).hashCode() % 5) {
+        0 -> R.drawable.ic_nav_apps
+        1 -> R.drawable.ic_nav_overview
+        2 -> R.drawable.ic_nav_processes
+        3 -> R.drawable.ic_nav_monitor
+        else -> R.drawable.ic_nav_settings
     }
 
     Card(
@@ -353,7 +340,7 @@ private fun RunningAppCard(proc: ProcessSnapshot, pm: PackageManager) {
                 contentAlignment = Alignment.Center,
             ) {
                 Image(
-                    painter = BitmapPainter(painter),
+                    imageVector = ImageVector.vectorResource(iconRes),
                     contentDescription = null,
                     modifier = Modifier.size(36.dp),
                 )
