@@ -18,7 +18,7 @@ como “No disponible”, nunca como un dato inventado.
 - Package: `com.jonnyuun.processm`
 - Distribución: sideload (uso personal, fuera de Google Play)
 - Root: incluido en v1, siempre opt-in y con lista blanca.
-- APK de prueba: [v0.4.2-phase3](https://github.com/Jonnyu074a/process-m/releases/tag/v0.4.2-phase3)
+- APK de prueba: [v0.4.3-phase3](https://github.com/Jonnyu074a/process-m/releases/tag/v0.4.3-phase3)
   (anteriores: [v0.4.1-phase3](https://github.com/Jonnyu074a/process-m/releases/tag/v0.4.1-phase3), ...)
 
 ## Documentación
